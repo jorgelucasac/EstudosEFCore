@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Estudos.EFCore.Data;
 using Estudos.EFCore.Domain;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -10,11 +12,10 @@ namespace Estudos.EFCore
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-
             //EnsureCreate();
             //EnsureDeleted();
-            GapDoEnsureCreate();
+            //GapDoEnsureCreate();
+            HealthCheckBancoDeDados();
         }
 
         static void EnsureCreate()
@@ -41,10 +42,37 @@ namespace Estudos.EFCore
             db1.Database.EnsureCreated();
             //não cria as tabelas pq o banco já existe
             db2.Database.EnsureCreated();
-           
+
             //forcando a criação das tabelas do contexto
             var databaseCreator = db2.GetService<IRelationalDatabaseCreator>();
             databaseCreator.CreateTables();
+        }
+
+        static void HealthCheckBancoDeDados()
+        {
+            using var db = new ApplicationDbContext();
+            //forma 3 (nova)
+            var possoConectar = db.Database.CanConnect();
+
+            Console.WriteLine(possoConectar ? "posso me connectar" : "Não posso me conectar:");
+
+
+            //formas antigas
+            //try
+            //{
+            //    // forma 1
+            //    var connection = db.Database.GetDbConnection();
+            //    connection.Open();
+
+            //    //forma 2
+            //    var any = db.Funcionarios.Any();
+
+            //    Console.WriteLine("posso me connectar");
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine("Não posso me conectar: " + e.Message);
+            //}
         }
     }
 }
