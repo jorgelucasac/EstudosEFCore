@@ -30,7 +30,8 @@ namespace Estudos.EFCore
             //MigracoesPendentes();
             //AplicarMigracaoEmTempodeExecucao();
             //TodasMigracoes();
-            MigracoesJaAplicadas();
+            //MigracoesJaAplicadas();
+            ScriptGeralDoBancoDeDados();
         }
 
         static void EnsureCreate()
@@ -221,6 +222,14 @@ namespace Estudos.EFCore
             using var db = new ApplicationDbContext();
 
             db.Database.Migrate();
+        }
+
+        static void ScriptGeralDoBancoDeDados()
+        {
+            using var db = new ApplicationDbContext();
+            var script = db.Database.GenerateCreateScript();
+
+            Console.WriteLine(script);
         }
 
     }
