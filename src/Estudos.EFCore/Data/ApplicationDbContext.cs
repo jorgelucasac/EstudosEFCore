@@ -21,7 +21,7 @@ namespace Estudos.EFCore.Data
             optionsBuilder
                 .UseSqlServer(_configuration.GetConnectionString("SqlServerConnection"))
                 .EnableSensitiveDataLogging()
-                .LogTo(Console.WriteLine, LogLevel.Information);
+                .LogTo(Console.WriteLine, LogLevel.Critical);
         }
 
         public DbSet<Departamento> Departamentos { get; set; }

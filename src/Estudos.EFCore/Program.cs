@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using Estudos.EFCore.Data;
 using Estudos.EFCore.Domain;
@@ -12,10 +14,15 @@ namespace Estudos.EFCore
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("INICIANDO...");
             //EnsureCreate();
             //EnsureDeleted();
             //GapDoEnsureCreate();
-            HealthCheckBancoDeDados();
+            //HealthCheckBancoDeDados();
+
+            var any = new ApplicationDbContext().Departamentos.Any();
+            GerenciarEstadoDaConexao(false);
+            GerenciarEstadoDaConexao(true);
         }
 
         static void EnsureCreate()
@@ -74,5 +81,39 @@ namespace Estudos.EFCore
             //    Console.WriteLine("Não posso me conectar: " + e.Message);
             //}
         }
+
+        static int _count;
+        static void GerenciarEstadoDaConexao(bool gerenciarEstadoConexao)
+        {
+            using var db = new ApplicationDbContext();
+            var time = Stopwatch.StartNew();
+
+            var conexao = db.Database.GetDbConnection();
+
+            //evento disparado sempre que a conexão muda de estado
+            conexao.StateChange += (_, args) =>
+            {
+                if (args.CurrentState == ConnectionState.Open)
+                    _count++;
+            }; 
+
+            // verifica se se deve abrir a conexão prematuramente
+            //ou deixar o EF controlar
+            if (gerenciarEstadoConexao)
+                conexao.Open();
+
+            for (var i = 0; i < 200; i++)
+            {
+                db.Departamentos.AsNoTracking().Any();
+            }
+
+            time.Stop();
+            var mensagem = $"Tempo: {time.Elapsed.ToString()}, {gerenciarEstadoConexao}, {_count}";
+
+           Console.WriteLine(mensagem);
+            _count = 0;
+        }
+
+
     }
 }
