@@ -26,8 +26,10 @@ namespace Estudos.EFCore
 
             //ExecuteSQL();
             //SqlInjection();
+
             //MigracoesPendentes();
-            AplicarMigracaoEmTempodeExecucao();
+            //AplicarMigracaoEmTempodeExecucao();
+            TodasMigracoes();
         }
 
         static void EnsureCreate()
@@ -170,7 +172,6 @@ namespace Estudos.EFCore
             Console.WriteLine($"update departamentos set descricao='AtaqueSqlInjection' where descricao='{descricao}'");
         }
 
-
         static void MigracoesPendentes()
         {
             using var db = new ApplicationDbContext();
@@ -191,6 +192,20 @@ namespace Estudos.EFCore
             using var db = new ApplicationDbContext();
 
             db.Database.Migrate();
+        }
+
+        static void TodasMigracoes()
+        {
+            using var db = new ApplicationDbContext();
+
+            var migracoes = db.Database.GetMigrations().ToList();
+
+            Console.WriteLine($"Total: {migracoes.Count()}");
+
+            foreach (var migracao in migracoes)
+            {
+                Console.WriteLine($"Migração: {migracao}");
+            }
         }
     }
 }
