@@ -29,7 +29,8 @@ namespace Estudos.EFCore
 
             //MigracoesPendentes();
             //AplicarMigracaoEmTempodeExecucao();
-            TodasMigracoes();
+            //TodasMigracoes();
+            MigracoesJaAplicadas();
         }
 
         static void EnsureCreate()
@@ -172,6 +173,34 @@ namespace Estudos.EFCore
             Console.WriteLine($"update departamentos set descricao='AtaqueSqlInjection' where descricao='{descricao}'");
         }
 
+        static void TodasMigracoes()
+        {
+            using var db = new ApplicationDbContext();
+
+            var migracoes = db.Database.GetMigrations().ToList();
+
+            Console.WriteLine($"Total: {migracoes.Count()}");
+
+            foreach (var migracao in migracoes)
+            {
+                Console.WriteLine($"Migração: {migracao}");
+            }
+        }
+
+        static void MigracoesJaAplicadas()
+        {
+            using var db = new ApplicationDbContext();
+
+            var migracoes = db.Database.GetAppliedMigrations();
+
+            Console.WriteLine($"Total: {migracoes.Count()}");
+
+            foreach (var migracao in migracoes)
+            {
+                Console.WriteLine($"Migração: {migracao}");
+            }
+        }
+
         static void MigracoesPendentes()
         {
             using var db = new ApplicationDbContext();
@@ -194,18 +223,5 @@ namespace Estudos.EFCore
             db.Database.Migrate();
         }
 
-        static void TodasMigracoes()
-        {
-            using var db = new ApplicationDbContext();
-
-            var migracoes = db.Database.GetMigrations().ToList();
-
-            Console.WriteLine($"Total: {migracoes.Count()}");
-
-            foreach (var migracao in migracoes)
-            {
-                Console.WriteLine($"Migração: {migracao}");
-            }
-        }
     }
 }
