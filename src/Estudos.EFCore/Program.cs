@@ -26,7 +26,8 @@ namespace Estudos.EFCore
 
             //ExecuteSQL();
             //SqlInjection();
-            MigracoesPendentes();
+            //MigracoesPendentes();
+            AplicarMigracaoEmTempodeExecucao();
         }
 
         static void EnsureCreate()
@@ -184,6 +185,12 @@ namespace Estudos.EFCore
             }
         }
 
+        static void AplicarMigracaoEmTempodeExecucao()
+        {
+            EnsureDeleted();
+            using var db = new ApplicationDbContext();
 
+            db.Database.Migrate();
+        }
     }
 }
