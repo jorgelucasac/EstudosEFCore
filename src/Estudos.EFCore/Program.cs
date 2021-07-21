@@ -23,6 +23,9 @@ namespace Estudos.EFCore
             //var any = new ApplicationDbContext().Departamentos.Any();
             //GerenciarEstadoDaConexao(false);
             //GerenciarEstadoDaConexao(true);
+
+            //ExecuteSQL();
+            SqlInjection();
         }
 
         static void EnsureCreate()
@@ -131,6 +134,38 @@ namespace Estudos.EFCore
 
             //Terceira Opcao
             var linhasAfetadas3 = db.Database.ExecuteSqlInterpolated($"update departamentos set descricao={descricao} where id=1");
+        }
+
+        static void SqlInjection()
+        {
+            using var db = new ApplicationDbContext();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+
+            db.Departamentos.AddRange(
+                new Departamento
+                {
+                    Descricao = "Departamento 01"
+                },
+                new Departamento
+                {
+                    Descricao = "Departamento 02"
+                });
+            db.SaveChanges();
+
+            var descricao = "Teste ' or 1='1";
+            
+            //correta
+            //db.Database.ExecuteSqlRaw("update departamentos set descricao='AtaqueSqlInjection' where descricao={0}",descricao);
+
+            //inseguro
+            db.Database.ExecuteSqlRaw($"update departamentos set descricao='AtaqueSqlInjection' where descricao='{descricao}'");
+            foreach (var departamento in db.Departamentos.AsNoTracking())
+            {
+                Console.WriteLine($"Id: {departamento.Id}, Descricao: {departamento.Descricao}");
+            }
+
+            Console.WriteLine($"update departamentos set descricao='AtaqueSqlInjection' where descricao='{descricao}'");
         }
 
 
