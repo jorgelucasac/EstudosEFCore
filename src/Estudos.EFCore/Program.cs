@@ -1,5 +1,8 @@
 ﻿using System;
+using Estudos.EFCore.Data;
 using Estudos.EFCore.Domain;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Estudos.EFCore
 {
@@ -10,7 +13,8 @@ namespace Estudos.EFCore
             Console.WriteLine("Hello World!");
 
             //EnsureCreate();
-            EnsureDeleted();
+            //EnsureDeleted();
+            GapDoEnsureCreate();
         }
 
         static void EnsureCreate()
@@ -29,6 +33,18 @@ namespace Estudos.EFCore
             db.Database.EnsureDeleted();
         }
 
+        static void GapDoEnsureCreate()
+        {
+            using var db1 = new ApplicationDbContext();
+            using var db2 = new ApplicationDbContextCidade();
 
+            db1.Database.EnsureCreated();
+            //não cria as tabelas pq o banco já existe
+            db2.Database.EnsureCreated();
+           
+            //forcando a criação das tabelas do contexto
+            var databaseCreator = db2.GetService<IRelationalDatabaseCreator>();
+            databaseCreator.CreateTables();
+        }
     }
 }

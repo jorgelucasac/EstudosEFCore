@@ -1,16 +1,17 @@
 ﻿using System;
+using Estudos.EFCore.Domain;
 using Estudos.EFCore.Helper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Estudos.EFCore.Domain
+namespace Estudos.EFCore.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContextCidade : DbContext
     {
         private readonly IConfiguration _configuration;
 
-        public ApplicationDbContext()
+        public ApplicationDbContextCidade()
         {
             _configuration = ConfigurationHelper.ObterConfiguration();
         }
@@ -23,7 +24,6 @@ namespace Estudos.EFCore.Domain
                 .LogTo(Console.WriteLine, LogLevel.Information);
         }
 
-        public DbSet<Departamento> Departamentos { get; set; }
-        public DbSet<Funcionario> Funcionarios { get; set; }
+        public DbSet<Cidade> Cidades { get; set; }
     }
 }
