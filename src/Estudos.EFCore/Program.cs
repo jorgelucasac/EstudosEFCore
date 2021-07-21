@@ -20,9 +20,9 @@ namespace Estudos.EFCore
             //GapDoEnsureCreate();
             //HealthCheckBancoDeDados();
 
-            var any = new ApplicationDbContext().Departamentos.Any();
-            GerenciarEstadoDaConexao(false);
-            GerenciarEstadoDaConexao(true);
+            //var any = new ApplicationDbContext().Departamentos.Any();
+            //GerenciarEstadoDaConexao(false);
+            //GerenciarEstadoDaConexao(true);
         }
 
         static void EnsureCreate()
@@ -113,6 +113,26 @@ namespace Estudos.EFCore
            Console.WriteLine(mensagem);
             _count = 0;
         }
+
+        static void ExecuteSQL()
+        {
+            using var db = new ApplicationDbContext();
+
+            // Primeira Opcao
+            using (var cmd = db.Database.GetDbConnection().CreateCommand())
+            {
+                cmd.CommandText = "SELECT 1";
+                var linhasAfetadas1 = cmd.ExecuteNonQuery();
+            }
+
+            // Segunda Opcao
+            var descricao = "TESTE";
+            var linhasAfetadas2 = db.Database.ExecuteSqlRaw("update departamentos set descricao={0} where id=1", descricao);
+
+            //Terceira Opcao
+            var linhasAfetadas3 = db.Database.ExecuteSqlInterpolated($"update departamentos set descricao={descricao} where id=1");
+        }
+
 
 
     }
