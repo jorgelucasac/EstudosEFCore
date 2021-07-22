@@ -21,6 +21,7 @@ namespace Estudos.EFCore.Data
             optionsBuilder
                 .UseSqlServer(_configuration.GetConnectionString("SqlServerConnection"))
                 .EnableSensitiveDataLogging()
+                //.UseLazyLoadingProxies()
                 .LogTo(Console.WriteLine, LogLevel.Information);
         }
 
