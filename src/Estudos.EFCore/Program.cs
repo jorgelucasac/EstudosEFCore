@@ -33,7 +33,8 @@ namespace Estudos.EFCore
             //MigracoesJaAplicadas();
             //ScriptGeralDoBancoDeDados();
 
-            CarregamentoAdiantado();
+            //CarregamentoAdiantado();
+            CarregamentoExplicito();
         }
 
         static void EnsureCreate()
@@ -235,6 +236,9 @@ namespace Estudos.EFCore
         }
 
 
+        /// <summary>
+        /// carrega os dados da tabela e os relacaionamentos informados
+        /// </summary>
         static void CarregamentoAdiantado()
         {
             using var db = new ApplicationDbContext();
@@ -304,6 +308,43 @@ namespace Estudos.EFCore
 
                 db.SaveChanges();
                 db.ChangeTracker.Clear();
+            }
+        }
+
+        /// <summary>
+        /// informa quando carregacar os dados relacionados
+        /// </summary>
+        static void CarregamentoExplicito()
+        {
+            using var db = new ApplicationDbContext();
+            SetupTiposCarregamentos(db);
+
+            var departamentos = db
+                .Departamentos
+                .ToList();
+
+            foreach (var departamento in departamentos)
+            {
+                if (departamento.Id == 2)
+                {
+                    //db.Entry(departamento).Collection(p=>p.Funcionarios).Load();
+                    db.Entry(departamento).Collection(p => p.Funcionarios).Query().Where(p => p.Id > 2).ToList();
+                }
+
+                Console.WriteLine("---------------------------------------");
+                Console.WriteLine($"Departamento: {departamento.Descricao}");
+
+                if (departamento.Funcionarios?.Any() ?? false)
+                {
+                    foreach (var funcionario in departamento.Funcionarios)
+                    {
+                        Console.WriteLine($"\tFuncionario: {funcionario.Nome}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"\tNenhum funcionario encontrado!");
+                }
             }
         }
 
