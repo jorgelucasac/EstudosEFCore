@@ -31,7 +31,9 @@ namespace Estudos.EFCore
             //AplicarMigracaoEmTempodeExecucao();
             //TodasMigracoes();
             //MigracoesJaAplicadas();
-            ScriptGeralDoBancoDeDados();
+            //ScriptGeralDoBancoDeDados();
+
+            CarregamentoAdiantado();
         }
 
         static void EnsureCreate()
@@ -230,6 +232,79 @@ namespace Estudos.EFCore
             var script = db.Database.GenerateCreateScript();
 
             Console.WriteLine(script);
+        }
+
+
+        static void CarregamentoAdiantado()
+        {
+            using var db = new ApplicationDbContext();
+            SetupTiposCarregamentos(db);
+
+            var departamentos = db
+                .Departamentos
+                .Include(p => p.Funcionarios);
+
+            foreach (var departamento in departamentos)
+            {
+
+                Console.WriteLine("---------------------------------------");
+                Console.WriteLine($"Departamento: {departamento.Descricao}");
+
+                if (departamento.Funcionarios?.Any() ?? false)
+                {
+                    foreach (var funcionario in departamento.Funcionarios)
+                    {
+                        Console.WriteLine($"\tFuncionario: {funcionario.Nome}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"\tNenhum funcionario encontrado!");
+                }
+            }
+        }
+
+        static void SetupTiposCarregamentos(ApplicationDbContext db)
+        {
+            if (!db.Departamentos.Any())
+            {
+                db.Departamentos.AddRange(
+                    new Departamento
+                    {
+                        Descricao = "Departamento 01",
+                        Funcionarios = new System.Collections.Generic.List<Funcionario>
+                        {
+                            new Funcionario
+                            {
+                                Nome = "Rafael Almeida",
+                                Cpf = "99999999911",
+                                Rg= "2100062"
+                            }
+                        }
+                    },
+                    new Departamento
+                    {
+                        Descricao = "Departamento 02",
+                        Funcionarios = new System.Collections.Generic.List<Funcionario>
+                        {
+                            new Funcionario
+                            {
+                                Nome = "Bruno Brito",
+                                Cpf = "88888888811",
+                                Rg= "3100062"
+                            },
+                            new Funcionario
+                            {
+                                Nome = "Eduardo Pires",
+                                Cpf = "77777777711",
+                                Rg= "1100062"
+                            }
+                        }
+                    });
+
+                db.SaveChanges();
+                db.ChangeTracker.Clear();
+            }
         }
 
     }
