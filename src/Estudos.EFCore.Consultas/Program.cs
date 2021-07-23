@@ -18,7 +18,8 @@ namespace Estudos.EFCore.Consultas
             //FiltroGlobal();
             //IgnorarFiltroGlobal();
             //ConsultaProjetada();
-            ConsultaParametrizada();
+            //ConsultaParametrizada();
+            ConsultaInterolada();
 
 
 
@@ -99,6 +100,34 @@ namespace Estudos.EFCore.Consultas
             };
             var departamentos = db.Departamentos
                 .FromSqlRaw("SELECT * FROM Departamentos WHERE Id>{0}", id)
+                .Where(p => !p.Excluido)
+                .ToList();
+
+            foreach (var departamento in departamentos)
+            {
+                Console.WriteLine($"Descrição: {departamento.Descricao}");
+            }
+        }
+
+        /// <summary>
+        /// utilizando string interpolada para informar um comando sql com parametros
+        /// </summary>
+        static void ConsultaInterolada()
+        {
+            using var db = new ApplicationDbContext();
+            //Setup(db);
+
+            //forma 1
+            var id = 0;
+
+            //forma 2
+            //var id = new SqlParameter
+            //{
+            //    Value = 1,
+            //    SqlDbType = SqlDbType.Int
+            //};
+            var departamentos = db.Departamentos
+                .FromSqlInterpolated($"SELECT * FROM Departamentos WHERE Id>{id}")
                 .Where(p => !p.Excluido)
                 .ToList();
 
