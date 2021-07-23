@@ -23,7 +23,8 @@ namespace Estudos.EFCore.Consultas
             //ConsultaComTag();
             //EntendendoConsulta1NN1();
             //DivisaoDeConsulta();
-            CriarStoredProcedure();
+            //CriarStoredProcedure();
+            InserirDadosViaProcedure();
 
 
 
@@ -247,6 +248,13 @@ namespace Estudos.EFCore.Consultas
             using var db = new ApplicationDbContext();
 
             db.Database.ExecuteSqlRaw(criarDepartamento);
+        }
+
+        static void InserirDadosViaProcedure()
+        {
+            using var db = new ApplicationDbContext();
+
+            db.Database.ExecuteSqlRaw("execute CriarDepartamento @p0, @p1", "Departamento Via Procedure", true);
         }
 
         static void Setup(ApplicationDbContext db)
