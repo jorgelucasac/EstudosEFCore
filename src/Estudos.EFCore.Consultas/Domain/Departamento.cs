@@ -9,6 +9,6 @@ namespace Estudos.EFCore.Consultas.Domain
         public bool Ativo { get; set; }
         public bool Excluido { get; set; }
 
-        public List<Funcionario> Funcionarios;
+        public List<Funcionario> Funcionarios { get; set; }
     }
 }

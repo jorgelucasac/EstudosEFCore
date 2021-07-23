@@ -21,16 +21,25 @@ namespace Estudos.EFCore.Consultas.Data
             optionsBuilder
                 .UseSqlServer(_configuration.GetConnectionString("SqlServerConnection"))
                 .EnableSensitiveDataLogging()
-                .LogTo(Console.WriteLine, LogLevel.Information);
+                //.LogTo(Console.WriteLine, LogLevel.Information);
+                .LogTo(EscreverSql, LogLevel.Information);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //informa que não deve ser retornado os registros excluídos
-            modelBuilder.Entity<Departamento>().HasQueryFilter(p => !p.Excluido);
+            //modelBuilder.Entity<Departamento>().HasQueryFilter(p => !p.Excluido);
         }
 
         public DbSet<Departamento> Departamentos { get; set; }
         public DbSet<Funcionario> Funcionarios { get; set; }
+
+        public void EscreverSql(string sql)
+        {
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine(sql);
+            Console.WriteLine("\n\n");
+            Console.ResetColor();
+        }
     }
 }
