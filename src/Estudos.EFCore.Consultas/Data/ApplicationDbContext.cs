@@ -24,6 +24,12 @@ namespace Estudos.EFCore.Consultas.Data
                 .LogTo(Console.WriteLine, LogLevel.Information);
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //informa que não deve ser retornado os registros excluídos
+            modelBuilder.Entity<Departamento>().HasQueryFilter(p => !p.Excluido);
+        }
+
         public DbSet<Departamento> Departamentos { get; set; }
         public DbSet<Funcionario> Funcionarios { get; set; }
     }
