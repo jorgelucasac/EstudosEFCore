@@ -20,7 +20,8 @@ namespace Estudos.EFCore.Consultas
             //ConsultaProjetada();
             //ConsultaParametrizada();
             //ConsultaInterolada();
-            ConsultaComTag();
+            //ConsultaComTag();
+            EntendendoConsulta1NN1();
 
 
 
@@ -157,6 +158,44 @@ namespace Estudos.EFCore.Consultas
             {
                 Console.WriteLine($"Descrição: {departamento.Descricao}");
             }
+        }
+
+        //diferença em consultas 1xN vs Nx1
+        static void EntendendoConsulta1NN1()
+        {
+            using var db = new ApplicationDbContext();
+            Setup(db);
+            // Nx1 -> INNER JOIN
+            //retona os funcaionarios e o departamento do funcaionario
+            var funcionarios = db.Funcionarios
+                .Include(p => p.Departamento)
+                .ToList();
+
+
+            foreach (var funcionario in funcionarios)
+            {
+                Console.WriteLine($"Nome: {funcionario.Nome} / Descricap Dep: {funcionario.Departamento.Descricao}");
+            }
+
+
+            /*
+            // 1xN -> LEFT JOIN
+            //retona os departamentos e todos os funcaionarios de cada departamento
+            var departamentos = db.Departamentos
+                .Include(f=> f.Funcionarios)
+                .ToList();
+
+            
+            foreach (var departamento in departamentos)
+            {
+                Console.WriteLine($"Descrição: {departamento.Descricao}");
+
+                foreach (var funcionario in departamento.Funcionarios)
+                {
+                    Console.WriteLine($"Nome: {funcionario.Nome}");
+                }
+            }
+            */
         }
 
         static void Setup(ApplicationDbContext db)
