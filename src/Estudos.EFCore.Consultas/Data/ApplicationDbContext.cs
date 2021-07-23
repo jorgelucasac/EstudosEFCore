@@ -19,7 +19,10 @@ namespace Estudos.EFCore.Consultas.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseSqlServer(_configuration.GetConnectionString("SqlServerConnection"))
+                .UseSqlServer(
+                    _configuration.GetConnectionString("SqlServerConnection")
+                    , builder => builder.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
+
                 .EnableSensitiveDataLogging()
                 //.LogTo(Console.WriteLine, LogLevel.Information);
                 .LogTo(EscreverSql, LogLevel.Information);

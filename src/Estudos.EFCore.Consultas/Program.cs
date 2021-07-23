@@ -21,7 +21,8 @@ namespace Estudos.EFCore.Consultas
             //ConsultaParametrizada();
             //ConsultaInterolada();
             //ConsultaComTag();
-            EntendendoConsulta1NN1();
+            //EntendendoConsulta1NN1();
+            DivisaoDeConsulta();
 
 
 
@@ -196,6 +197,36 @@ namespace Estudos.EFCore.Consultas
                 }
             }
             */
+        }
+
+        /// <summary>
+        /// divide a consulta ao invés de usar join
+        /// assim, evitar repetir os dados
+        /// Pode ser configurado golbalmente no contexto
+        ///
+        /// 'AsSingleQuery' força a execução usando join
+        /// caso 'SplitQuery' esteja  configurado globalmente
+        /// </summary>
+        static void DivisaoDeConsulta()
+        {
+            using var db = new ApplicationDbContext();
+            Setup(db);
+
+            var departamentos = db.Departamentos
+                .Include(p => p.Funcionarios)
+                .Where(p => p.Id < 3)
+                //.AsSplitQuery()
+                .AsSingleQuery()
+                .ToList();
+
+            foreach (var departamento in departamentos)
+            {
+                Console.WriteLine($"Descrição: {departamento.Descricao}");
+                foreach (var funcionario in departamento.Funcionarios)
+                {
+                    Console.WriteLine($"\tNome: {funcionario.Nome}");
+                }
+            }
         }
 
         static void Setup(ApplicationDbContext db)
