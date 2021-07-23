@@ -25,7 +25,8 @@ namespace Estudos.EFCore.Consultas
             //DivisaoDeConsulta();
             //CriarStoredProcedure();
             //InserirDadosViaProcedure();
-            CriarStoredProcedureDeConsulta();
+            //CriarStoredProcedureDeConsulta();
+            ConsultaViaProcedure();
 
 
 
@@ -272,6 +273,23 @@ namespace Estudos.EFCore.Consultas
             using var db = new ApplicationDbContext();
 
             db.Database.ExecuteSqlRaw(criarDepartamento);
+        }
+
+        static void ConsultaViaProcedure()
+        {
+            using var db = new ApplicationDbContext();
+
+            var dep = new SqlParameter("@dep", "Departamento");
+
+            var departamentos = db.Departamentos
+                //.FromSqlRaw("EXECUTE GetDepartamentos @dep", dep)
+                .FromSqlInterpolated($"EXECUTE GetDepartamentos {dep}")
+                .ToList();
+
+            foreach (var departamento in departamentos)
+            {
+                Console.WriteLine(departamento.Descricao);
+            }
         }
 
         static void Setup(ApplicationDbContext db)
