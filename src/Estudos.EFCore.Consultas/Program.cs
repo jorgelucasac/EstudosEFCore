@@ -19,7 +19,8 @@ namespace Estudos.EFCore.Consultas
             //IgnorarFiltroGlobal();
             //ConsultaProjetada();
             //ConsultaParametrizada();
-            ConsultaInterolada();
+            //ConsultaInterolada();
+            ConsultaComTag();
 
 
 
@@ -137,7 +138,26 @@ namespace Estudos.EFCore.Consultas
             }
         }
 
+        /// <summary>
+        /// enviando comentários para o servidor
+        /// </summary>
+        static void ConsultaComTag()
+        {
+            using var db = new ApplicationDbContext();
+            Setup(db);
 
+            var departamentos = db.Departamentos
+                .TagWith(@"Estou enviando um comentario para o servidor
+                
+                Segundo comentario
+                Terceiro comentario")
+                .ToList();
+
+            foreach (var departamento in departamentos)
+            {
+                Console.WriteLine($"Descrição: {departamento.Descricao}");
+            }
+        }
 
         static void Setup(ApplicationDbContext db)
         {
