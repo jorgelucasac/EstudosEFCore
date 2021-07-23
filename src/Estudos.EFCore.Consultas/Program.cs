@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using Estudos.EFCore.Consultas.Data;
 using Estudos.EFCore.Consultas.Domain;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Estudos.EFCore.Consultas
@@ -15,7 +17,11 @@ namespace Estudos.EFCore.Consultas
 
             //FiltroGlobal();
             //IgnorarFiltroGlobal();
-            ConsultaProjetada();
+            //ConsultaProjetada();
+            ConsultaParametrizada();
+
+
+
             Console.WriteLine("\n\n");
         }
 
@@ -52,6 +58,7 @@ namespace Estudos.EFCore.Consultas
             }
         }
 
+        //informa os campos que devem ser retonados na consulta
         static void ConsultaProjetada()
         {
             using var db = new ApplicationDbContext();
@@ -59,9 +66,9 @@ namespace Estudos.EFCore.Consultas
 
             var departamentos = db.Departamentos
                 .Where(p => p.Id > 0)
-                .Select(p => new {p.Descricao, Funcionarios = p.Funcionarios.Select(a=> a.Nome)})
+                .Select(p => new { p.Descricao, Funcionarios = p.Funcionarios.Select(a => a.Nome) })
                 .ToList();
-                
+
             foreach (var departamento in departamentos)
             {
                 Console.WriteLine($"Descrição: {departamento.Descricao}");
@@ -72,6 +79,36 @@ namespace Estudos.EFCore.Consultas
                 }
             }
         }
+
+        /// <summary>
+        /// utilizando sql para montar a consulta
+        /// </summary>
+        static void ConsultaParametrizada()
+        {
+            using var db = new ApplicationDbContext();
+            //Setup(db);
+
+            //forma 1
+            //var id = 0;
+
+            //forma 2
+            var id = new SqlParameter
+            {
+                Value = 1,
+                SqlDbType = SqlDbType.Int
+            };
+            var departamentos = db.Departamentos
+                .FromSqlRaw("SELECT * FROM Departamentos WHERE Id>{0}", id)
+                .Where(p => !p.Excluido)
+                .ToList();
+
+            foreach (var departamento in departamentos)
+            {
+                Console.WriteLine($"Descrição: {departamento.Descricao}");
+            }
+        }
+
+
 
         static void Setup(ApplicationDbContext db)
         {
