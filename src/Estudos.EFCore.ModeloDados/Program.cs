@@ -1,5 +1,6 @@
 ﻿using System;
 using Estudos.EFCore.ModeloDados.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Estudos.EFCore.ModeloDados
 {
@@ -15,6 +16,16 @@ namespace Estudos.EFCore.ModeloDados
             using var db = new ApplicationDbContext();
             db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
+        }
+
+        static void PropagarDados()
+        {
+            using var db = new ApplicationDbContext();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+
+            var script = db.Database.GenerateCreateScript();
+            Console.WriteLine(script);
         }
     }
 }

@@ -62,10 +62,18 @@ namespace Estudos.EFCore.ModeloDados.Data
                 .HasFilter("Descricao IS NOT NULL")// indexa apenas os valores não nulos
                 .HasFillFactor(80)// o quanto da folha de indexação será utilizada
                 .HasDatabaseName("idx_meu_indice_composto");
+
+            //setando registros iniciais para a tabela estado
+            modelBuilder.Entity<Estado>().HasData(new[]
+            {
+                new Estado { Id = 1, Nome = "Sao Paulo"},
+                new Estado { Id = 2, Nome = "Sergipe"}
+            });
         }
 
         public DbSet<Departamento> Departamentos { get; set; }
         public DbSet<Funcionario> Funcionarios { get; set; }
+        public DbSet<Estado> Estados { get; set; }
 
         public void EscreverLogSql(string sql)
         {
