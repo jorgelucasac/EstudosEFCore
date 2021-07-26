@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Estudos.EFCore.ModeloDados.Data;
+using Estudos.EFCore.ModeloDados.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Estudos.EFCore.ModeloDados
@@ -11,7 +13,8 @@ namespace Estudos.EFCore.ModeloDados
             //Collations();
             //PropagarDados();
             //Schema();
-            ConversorValores();
+            //ConversorValores();
+            ConversorCustomizado();
         }
 
         static void Collations()
@@ -40,6 +43,24 @@ namespace Estudos.EFCore.ModeloDados
         }
 
         static void ConversorValores() => Schema();
+        static void ConversorCustomizado()
+        {
+            using var db = new ApplicationDbContext();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+
+            db.Conversores.Add(
+                new Conversor
+                {
+                    Status = Status.Devolvido,
+                });
+
+            db.SaveChanges();
+
+            var conversorEmAnalise = db.Conversores.AsNoTracking().FirstOrDefault(p => p.Status == Status.Analise);
+
+            var conversorDevolvido = db.Conversores.AsNoTracking().FirstOrDefault(p => p.Status == Status.Devolvido);
+        }
     }
 
 

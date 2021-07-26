@@ -7,6 +7,7 @@ namespace Estudos.EFCore.ModeloDados.Domain
         public int Id { get; set; }
         public bool Ativo { get; set; }
         public bool Excluido { get; set; }
+        public Status Status { get; set; }
         public Versao Versao { get; set; }
         // ReSharper disable once InconsistentNaming
         public IPAddress EnderecoIP { get; set; }
@@ -18,5 +19,12 @@ namespace Estudos.EFCore.ModeloDados.Domain
         EfCore2,
         EfCore3,
         EfCore5,
+    }
+
+    public enum Status
+    {
+        Analise,
+        Enviado,
+        Devolvido,
     }
 }

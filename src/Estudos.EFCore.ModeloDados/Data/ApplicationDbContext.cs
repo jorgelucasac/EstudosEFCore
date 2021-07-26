@@ -1,4 +1,5 @@
 ﻿using System;
+using Estudos.EFCore.ModeloDados.Conversores;
 using Estudos.EFCore.ModeloDados.Domain;
 using Estudos.EFCore.ModeloDados.Helper;
 using Microsoft.EntityFrameworkCore;
@@ -95,6 +96,10 @@ namespace Estudos.EFCore.ModeloDados.Data
             //.HasConversion<string>();
             // forma 2
             //.HasConversion(p => p.ToString(), p => (Versao)Enum.Parse(typeof(Versao), p));
+
+            modelBuilder.Entity<Conversor>()
+                .Property(p => p.Status)
+                .HasConversion(new ConversorCustomizado());
         }
 
         public DbSet<Departamento> Departamentos { get; set; }
