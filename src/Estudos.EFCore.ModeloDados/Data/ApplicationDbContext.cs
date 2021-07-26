@@ -2,6 +2,7 @@
 using Estudos.EFCore.ModeloDados.Domain;
 using Estudos.EFCore.ModeloDados.Helper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -69,15 +70,37 @@ namespace Estudos.EFCore.ModeloDados.Data
                 new Estado { Id = 1, Nome = "Sao Paulo"},
                 new Estado { Id = 2, Nome = "Sergipe"}
             });
-            */
+           
 
+            //definindo os schemas
             modelBuilder.HasDefaultSchema("cadastros");
             modelBuilder.Entity<Estado>().ToTable("Estados", "SegundoSchema");
+             */
+
+            //forma 3
+            var conversao =
+                new ValueConverter<Versao, string>(p => p.ToString(), p => (Versao)Enum.Parse(typeof(Versao), p));
+
+            //Conversores disponiveis 
+            //Microsoft.EntityFrameworkCore.Storage.ValueConversion.
+
+            var conversao2 = new EnumToStringConverter<Versao>();
+
+
+            modelBuilder.Entity<Conversor>()
+                .Property(p => p.Versao)
+                .HasConversion(conversao);
+            //.HasConversion(conversao1);
+            //forma 1
+            //.HasConversion<string>();
+            // forma 2
+            //.HasConversion(p => p.ToString(), p => (Versao)Enum.Parse(typeof(Versao), p));
         }
 
         public DbSet<Departamento> Departamentos { get; set; }
         public DbSet<Funcionario> Funcionarios { get; set; }
         public DbSet<Estado> Estados { get; set; }
+        public DbSet<Conversor> Conversores { get; set; }
 
         public void EscreverLogSql(string sql)
         {

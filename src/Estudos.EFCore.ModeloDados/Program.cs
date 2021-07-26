@@ -10,7 +10,8 @@ namespace Estudos.EFCore.ModeloDados
         {
             //Collations();
             //PropagarDados();
-            Schema();
+            //Schema();
+            ConversorValores();
         }
 
         static void Collations()
@@ -37,5 +38,9 @@ namespace Estudos.EFCore.ModeloDados
             var script = db.Database.GenerateCreateScript();
             Console.WriteLine(script);
         }
+
+        static void ConversorValores() => Schema();
     }
+
+
 }
