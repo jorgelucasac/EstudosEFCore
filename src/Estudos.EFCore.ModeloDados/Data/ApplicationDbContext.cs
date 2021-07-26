@@ -30,6 +30,7 @@ namespace Estudos.EFCore.ModeloDados.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            /*
             //SQL_Latin1_General: designador de agrupamentos - (especifica ás regras básicas de agrupamento)
             //CP1 : codificação ANSI
             //CI  : case insensitive
@@ -52,6 +53,15 @@ namespace Estudos.EFCore.ModeloDados.Data
 
             //utilizando a sequencia
             modelBuilder.Entity<Departamento>().Property(p => p.Id).HasDefaultValueSql("NEXT VALUE FOR sequencias.MinhaSequencia");
+            */
+
+            //criando im indice
+            modelBuilder.Entity<Departamento>()
+                .HasIndex(d => new { d.Descricao, d.Ativo })
+                .IsUnique()//infoma que os calores do indice não se repetem
+                .HasFilter("Descricao IS NOT NULL")// indexa apenas os valores não nulos
+                .HasFillFactor(80)// o quanto da folha de indexação será utilizada
+                .HasDatabaseName("idx_meu_indice_composto");
         }
 
         public DbSet<Departamento> Departamentos { get; set; }
