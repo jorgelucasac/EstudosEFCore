@@ -24,7 +24,12 @@ namespace Estudos.EFCore.Infraestrutura.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseSqlServer(_configuration.GetConnectionString("SqlServerConnection"))
+                .UseSqlServer(_configuration.GetConnectionString("SqlServerConnection"),
+                    opt =>
+                    {
+                        //abilitando a quantidade de dados por comando enviados ao banco de dados
+                        opt.MaxBatchSize(100);
+                    })
                 //habilitando detalhes de erros
                 .EnableDetailedErrors()
 

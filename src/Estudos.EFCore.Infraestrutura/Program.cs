@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Estudos.EFCore.Infraestrutura.Data;
+using Estudos.EFCore.Infraestrutura.Domain;
 
 namespace Estudos.EFCore.Infraestrutura
 {
@@ -9,7 +10,8 @@ namespace Estudos.EFCore.Infraestrutura
         static void Main(string[] args)
         {
             //ConsultarDepartamentos();
-            DadosSensiveis();
+            //DadosSensiveis();
+            HabilitandoBatchSize();
         }
 
         static void DadosSensiveis()
@@ -25,6 +27,24 @@ namespace Estudos.EFCore.Infraestrutura
             using var db = new ApplicationDbContext();
 
             var departamentos = db.Departamentos.Where(p => p.Id > 0).ToArray();
+        }
+
+        static void HabilitandoBatchSize()
+        {
+            using var db = new ApplicationDbContext();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+
+            for (var i = 0; i < 50; i++)
+            {
+                db.Departamentos.Add(
+                    new Departamento
+                    {
+                        Descricao = "Departamento " + i
+                    });
+            }
+
+            db.SaveChanges();
         }
     }
 }
