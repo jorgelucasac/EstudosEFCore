@@ -53,7 +53,7 @@ namespace Estudos.EFCore.Infraestrutura
         {
             using var db = new ApplicationDbContext();
 
-            //db.Database.SetCommandTimeout(10);
+            db.Database.SetCommandTimeout(10);
 
             //db.Database.ExecuteSqlRaw("SELECT 1");
             db.Database.ExecuteSqlRaw("WAITFOR DELAY '00:00:07';SELECT 1");
