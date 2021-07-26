@@ -2,6 +2,7 @@
 using Estudos.EFCore.Infraestrutura.Domain;
 using Estudos.EFCore.Infraestrutura.Helper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -21,7 +22,19 @@ namespace Estudos.EFCore.Infraestrutura.Data
             optionsBuilder
                 .UseSqlServer(_configuration.GetConnectionString("SqlServerConnection"))
                 //habilitando a exibição dos logs
-                .LogTo(EscreverLogSql, LogLevel.Information);
+                //.LogTo(EscreverLogSql, LogLevel.Information)
+
+
+                .LogTo(
+                    //finção que escreve os logs no console
+                    EscreverLogSql,
+                    //tipos de log que deve ser exibidos
+                    new[] { RelationalEventId.CommandExecuted, CoreEventId.ContextInitialized },
+                    //nivel dos logs exibidos
+                    LogLevel.Information,
+                    //opções adicionais de como os logs deve ser exibidos
+                    DbContextLoggerOptions.LocalTime | DbContextLoggerOptions.SingleLine
+                    );
         }
 
         public DbSet<Departamento> Departamentos { get; set; }
