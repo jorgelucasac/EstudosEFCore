@@ -8,7 +8,9 @@ namespace Estudos.EFCore.ModeloDados
     {
         static void Main(string[] args)
         {
-            Collations();
+            //Collations();
+            //PropagarDados();
+            Schema();
         }
 
         static void Collations()
@@ -23,6 +25,14 @@ namespace Estudos.EFCore.ModeloDados
             using var db = new ApplicationDbContext();
             db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
+
+            var script = db.Database.GenerateCreateScript();
+            Console.WriteLine(script);
+        }
+
+        static void Schema()
+        {
+            using var db = new ApplicationDbContext();
 
             var script = db.Database.GenerateCreateScript();
             Console.WriteLine(script);

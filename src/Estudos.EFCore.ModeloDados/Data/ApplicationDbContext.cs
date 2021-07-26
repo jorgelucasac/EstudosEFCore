@@ -53,7 +53,7 @@ namespace Estudos.EFCore.ModeloDados.Data
 
             //utilizando a sequencia
             modelBuilder.Entity<Departamento>().Property(p => p.Id).HasDefaultValueSql("NEXT VALUE FOR sequencias.MinhaSequencia");
-            */
+            
 
             //criando im indice
             modelBuilder.Entity<Departamento>()
@@ -69,6 +69,10 @@ namespace Estudos.EFCore.ModeloDados.Data
                 new Estado { Id = 1, Nome = "Sao Paulo"},
                 new Estado { Id = 2, Nome = "Sergipe"}
             });
+            */
+
+            modelBuilder.HasDefaultSchema("cadastros");
+            modelBuilder.Entity<Estado>().ToTable("Estados", "SegundoSchema");
         }
 
         public DbSet<Departamento> Departamentos { get; set; }
