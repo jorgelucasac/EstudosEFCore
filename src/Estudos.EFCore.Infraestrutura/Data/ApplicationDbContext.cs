@@ -31,6 +31,8 @@ namespace Estudos.EFCore.Infraestrutura.Data
                         opt.MaxBatchSize(100);
                         //seta o time out dos comando enviados ao banco 
                         opt.CommandTimeout(5);
+                        //ativa o retry quando ocorrer erros de conexão com o banco de dados
+                        opt.EnableRetryOnFailure(4, TimeSpan.FromSeconds(10), null);
                     })
                 //habilitando detalhes de erros
                 .EnableDetailedErrors()
@@ -40,7 +42,7 @@ namespace Estudos.EFCore.Infraestrutura.Data
 
                 //escrevendo log em um arquivo
                 //.LogTo(_writer.WriteLine, LogLevel.Information);
-                
+
                 //habilitando a exibição dos logs
                 .LogTo(EscreverLogSql, LogLevel.Information);
 
