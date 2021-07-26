@@ -1,4 +1,5 @@
 ﻿using System;
+using Estudos.EFCore.ModeloDados.Data;
 
 namespace Estudos.EFCore.ModeloDados
 {
@@ -6,7 +7,14 @@ namespace Estudos.EFCore.ModeloDados
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Collations();
+        }
+
+        static void Collations()
+        {
+            using var db = new ApplicationDbContext();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
         }
     }
 }

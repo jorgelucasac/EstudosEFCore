@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Estudos.EFCore.ModeloDados.Domain;
 using Estudos.EFCore.ModeloDados.Helper;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +26,20 @@ namespace Estudos.EFCore.ModeloDados.Data
                 .EnableSensitiveDataLogging()
                 //habilitando a exibição dos logs
                 .LogTo(EscreverLogSql, LogLevel.Information);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //SQL_Latin1_General: designador de agrupamentos - (especifica ás regras básicas de agrupamento)
+            //CP1 : codificação ANSI
+            //CI  : case insensitive
+            //CS  : case sensitive
+            //AI  : acentuação insensitive 
+            //AS  : acentuação sensitive 
+            modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AI");
+
+            //setando configurações de collation para um propriedade especifica
+            modelBuilder.Entity<Departamento>().Property(p => p.Descricao).UseCollation("SQL_Latin1_General_CP1_CS_AS");
         }
 
         public DbSet<Departamento> Departamentos { get; set; }
