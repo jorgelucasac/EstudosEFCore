@@ -40,6 +40,18 @@ namespace Estudos.EFCore.ModeloDados.Data
 
             //setando configurações de collation para um propriedade especifica
             modelBuilder.Entity<Departamento>().Property(p => p.Descricao).UseCollation("SQL_Latin1_General_CP1_CS_AS");
+
+
+            //tipos aceitos MsSQL: int, long, byte, decimal
+            modelBuilder.HasSequence<int>("MinhaSequencia", "sequencias")
+                .StartsAt(100)
+                .IncrementsBy(2)
+                .HasMin(100)
+                .HasMax(110)
+                .IsCyclic();// reinicia o contador da sequencia
+
+            //utilizando a sequencia
+            modelBuilder.Entity<Departamento>().Property(p => p.Id).HasDefaultValueSql("NEXT VALUE FOR sequencias.MinhaSequencia");
         }
 
         public DbSet<Departamento> Departamentos { get; set; }
