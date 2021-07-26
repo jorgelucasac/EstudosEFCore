@@ -29,6 +29,8 @@ namespace Estudos.EFCore.Infraestrutura.Data
                     {
                         //abilitando a quantidade de dados por comando enviados ao banco de dados
                         opt.MaxBatchSize(100);
+                        //seta o time out dos comando enviados ao banco 
+                        opt.CommandTimeout(5);
                     })
                 //habilitando detalhes de erros
                 .EnableDetailedErrors()

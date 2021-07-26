@@ -2,6 +2,7 @@
 using System.Linq;
 using Estudos.EFCore.Infraestrutura.Data;
 using Estudos.EFCore.Infraestrutura.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Estudos.EFCore.Infraestrutura
 {
@@ -11,7 +12,8 @@ namespace Estudos.EFCore.Infraestrutura
         {
             //ConsultarDepartamentos();
             //DadosSensiveis();
-            HabilitandoBatchSize();
+            //HabilitandoBatchSize();
+            TempoComandoGeral();
         }
 
         static void DadosSensiveis()
@@ -46,5 +48,16 @@ namespace Estudos.EFCore.Infraestrutura
 
             db.SaveChanges();
         }
+
+        static void TempoComandoGeral()
+        {
+            using var db = new ApplicationDbContext();
+
+            //db.Database.SetCommandTimeout(10);
+
+            //db.Database.ExecuteSqlRaw("SELECT 1");
+            db.Database.ExecuteSqlRaw("WAITFOR DELAY '00:00:07';SELECT 1");
+        }
+
     }
 }
