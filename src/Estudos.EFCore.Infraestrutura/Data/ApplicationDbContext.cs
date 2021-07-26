@@ -25,11 +25,14 @@ namespace Estudos.EFCore.Infraestrutura.Data
         {
             optionsBuilder
                 .UseSqlServer(_configuration.GetConnectionString("SqlServerConnection"))
-                .LogTo(_writer.WriteLine, LogLevel.Information);
+                //habilitando detalhes de erros
+                .EnableDetailedErrors()
+                //escrevendo log em um arquivo
+                //.LogTo(_writer.WriteLine, LogLevel.Information);
 
 
-            //habilitando a exibição dos logs
-            //.LogTo(EscreverLogSql, LogLevel.Information)
+                //habilitando a exibição dos logs
+                .LogTo(EscreverLogSql, LogLevel.Information);
 
 
             //.LogTo(
