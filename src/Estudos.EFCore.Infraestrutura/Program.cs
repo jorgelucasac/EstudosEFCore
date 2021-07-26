@@ -8,7 +8,16 @@ namespace Estudos.EFCore.Infraestrutura
     {
         static void Main(string[] args)
         {
-            ConsultarDepartamentos();
+            //ConsultarDepartamentos();
+            DadosSensiveis();
+        }
+
+        static void DadosSensiveis()
+        {
+            using var db = new ApplicationDbContext();
+
+            var descricao = "Departamento";
+            var departamentos = db.Departamentos.Where(p => p.Descricao == descricao).ToArray();
         }
 
         static void ConsultarDepartamentos()

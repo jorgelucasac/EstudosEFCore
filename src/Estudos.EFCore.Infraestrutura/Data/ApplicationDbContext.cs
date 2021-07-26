@@ -27,10 +27,13 @@ namespace Estudos.EFCore.Infraestrutura.Data
                 .UseSqlServer(_configuration.GetConnectionString("SqlServerConnection"))
                 //habilitando detalhes de erros
                 .EnableDetailedErrors()
+
+                //habilitando visualização de dados sensiveis
+                .EnableSensitiveDataLogging()
+
                 //escrevendo log em um arquivo
                 //.LogTo(_writer.WriteLine, LogLevel.Information);
-
-
+                
                 //habilitando a exibição dos logs
                 .LogTo(EscreverLogSql, LogLevel.Information);
 
