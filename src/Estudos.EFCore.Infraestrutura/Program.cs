@@ -59,5 +59,25 @@ namespace Estudos.EFCore.Infraestrutura
             db.Database.ExecuteSqlRaw("WAITFOR DELAY '00:00:07';SELECT 1");
         }
 
+
+        //deve ser utilizado quando a aplicação estiver com o retry ativado e 
+        //a instrução utilizar transação explicita
+        static void ExecutarEstrategiaResiliencia()
+        {
+            using var db = new ApplicationDbContext();
+
+            var strategy = db.Database.CreateExecutionStrategy();
+            strategy.Execute(() =>
+            {
+                using var transaction = db.Database.BeginTransaction();
+
+                db.Departamentos.Add(new Departamento { Descricao = "Departamento Transacao" });
+                db.SaveChanges();
+
+                transaction.Commit();
+            });
+
+        }
+
     }
 }
