@@ -19,8 +19,9 @@ namespace Estudos.EFCore.ModeloDados
             //TrabalhandoComPropriedadesDeSombra();
 
             //TiposDePropriedades();
-            Relacionamento1Para1();
-            muitos;
+            //Relacionamento1Para1();
+            //Relacionamento1ParaMuitos();
+            RelacionamentoMuitosParaMuitos();
         }
 
         static void Collations()
@@ -154,23 +155,80 @@ namespace Estudos.EFCore.ModeloDados
 
         static void Relacionamento1ParaMuitos()
         {
+            using (var db = new ApplicationDbContext())
+            {
+                db.Database.EnsureDeleted();
+                db.Database.EnsureCreated();
+
+                var estado = new Estado
+                {
+                    Nome = "Sergipe",
+                    Governador = new Governador { Nome = "Rafael Almeida" }
+                };
+
+                estado.Cidades.Add(new Cidade { Nome = "Itabaiana" });
+
+                db.Estados.Add(estado);
+
+                db.SaveChanges();
+            }
+
+            using (var db = new ApplicationDbContext())
+            {
+                var estados = db.Estados.ToList();
+
+                estados[0].Cidades.Add(new Cidade { Nome = "Aracaju" });
+
+                db.SaveChanges();
+
+                foreach (var est in db.Estados.Include(p => p.Cidades).AsNoTracking())
+                {
+                    Console.WriteLine($"Estado: {est.Nome}, Governador: {est.Governador.Nome}");
+
+                    foreach (var cidade in est.Cidades)
+                    {
+                        Console.WriteLine($"\t Cidade: {cidade.Nome}");
+                    }
+                }
+            }
+        }
+
+        static void RelacionamentoMuitosParaMuitos()
+        {
             using var db = new ApplicationDbContext();
             db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
 
-            var estado = new Estado
-            {
-                Nome = "Sergipe",
-                Governador = new Governador {Nome = "Rafael Almeida"}
-            };
+            var ator1 = new Ator { Nome = "Rafael" };
+            var ator2 = new Ator { Nome = "Pires" };
+            var ator3 = new Ator { Nome = "Bruno" };
 
-            estado.Cidades.Add(new Cidade {Nome = "Itabaiana"});
+            var filme1 = new Filme { Descricao = "A volta dos que não foram" };
+            var filme2 = new Filme { Descricao = "De volta para o futuro" };
+            var filme3 = new Filme { Descricao = "Poeira em alto mar filme" };
 
-            db.Estados.Add(estado);
+            ator1.Filmes.Add(filme1);
+            ator1.Filmes.Add(filme2);
+
+            ator2.Filmes.Add(filme1);
+
+            filme3.Atores.Add(ator1);
+            filme3.Atores.Add(ator2);
+            filme3.Atores.Add(ator3);
+
+            db.AddRange(ator1, ator2, filme3);
 
             db.SaveChanges();
 
-            var estados = db.Estados.Include(c => c.Cidades).ToList();
+            foreach (var ator in db.Atores.Include(e => e.Filmes))
+            {
+                Console.WriteLine($"Ator: {ator.Nome}");
+
+                foreach (var filme in ator.Filmes)
+                {
+                    Console.WriteLine($"\tFilme: {filme.Descricao}");
+                }
+            }
         }
     }
 

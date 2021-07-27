@@ -151,6 +151,9 @@ namespace Estudos.EFCore.ModeloDados.Data
         public DbSet<Conversor> Conversores { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
 
+        public DbSet<Ator> Atores { get; set; }
+        public DbSet<Filme> Filmes { get; set; }
+
         public void EscreverLogSql(string sql)
         {
             Console.ForegroundColor = ConsoleColor.Blue;
