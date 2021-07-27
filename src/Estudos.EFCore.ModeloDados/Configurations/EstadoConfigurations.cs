@@ -20,6 +20,20 @@ namespace Estudos.EFCore.ModeloDados.Configurations
             //informa que governador sempre derve ser carregado
             //quando um estado for consultado
             builder.Navigation(e => e.Governador).AutoInclude();
+
+
+            builder
+                //informa que estado varias cidades
+                .HasMany(e => e.Cidades)
+                //informa que cidade esta relacionado com o Estado
+                .WithOne(c=> c.Estado)
+                //informa qual a chave estrangeira
+                //a entidade que possui a chave estrangeira é a entidade dependente
+                .HasForeignKey(p => p.EstadoId)
+                //infroma que o EtadoId não é obrigatório
+                .IsRequired(false)
+                //força excluir as cidades antes de exluir o estado
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
