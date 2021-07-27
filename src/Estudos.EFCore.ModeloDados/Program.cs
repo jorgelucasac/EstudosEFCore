@@ -15,6 +15,7 @@ namespace Estudos.EFCore.ModeloDados
             //Schema();
             //ConversorValores();
             PropriedadesDeSombra();
+            TrabalhandoComPropriedadesDeSombra();
         }
 
         static void Collations()
@@ -67,6 +68,27 @@ namespace Estudos.EFCore.ModeloDados
             using var db = new ApplicationDbContext();
             db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
+        }
+
+        static void TrabalhandoComPropriedadesDeSombra()
+        {
+            using var db = new ApplicationDbContext();
+            //db.Database.EnsureDeleted();
+            //db.Database.EnsureCreated();
+
+            //var departamento = new Departamento
+            //{
+            //    Descricao = "Departamento Propriedade de Sombra"
+            //};
+
+            //db.Departamentos.Add(departamento);
+            ////atribuindo valor a propriedade de sombra
+            //db.Entry(departamento).Property("UltimaAtualizacao").CurrentValue = DateTime.Now;
+
+            //db.SaveChanges();
+
+            //consuntando pela propriedade de sombra
+            var departamentos = db.Departamentos.Where(p => EF.Property<DateTime>(p, "UltimaAtualizacao") < DateTime.Now).ToArray();
         }
     }
 
