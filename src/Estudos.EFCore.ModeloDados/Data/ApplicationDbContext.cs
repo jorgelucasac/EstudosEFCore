@@ -100,6 +100,9 @@ namespace Estudos.EFCore.ModeloDados.Data
             modelBuilder.Entity<Conversor>()
                 .Property(p => p.Status)
                 .HasConversion(new ConversorCustomizado());
+
+            //definindo uma propriedade de sombra
+            modelBuilder.Entity<Departamento>().Property<DateTime>("UltimaAtualizacao");
         }
 
         public DbSet<Departamento> Departamentos { get; set; }

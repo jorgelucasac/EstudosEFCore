@@ -14,7 +14,7 @@ namespace Estudos.EFCore.ModeloDados
             //PropagarDados();
             //Schema();
             //ConversorValores();
-            ConversorCustomizado();
+            PropriedadesDeSombra();
         }
 
         static void Collations()
@@ -60,6 +60,13 @@ namespace Estudos.EFCore.ModeloDados
             var conversorEmAnalise = db.Conversores.AsNoTracking().FirstOrDefault(p => p.Status == Status.Analise);
 
             var conversorDevolvido = db.Conversores.AsNoTracking().FirstOrDefault(p => p.Status == Status.Devolvido);
+        }
+
+        static void PropriedadesDeSombra()
+        {
+            using var db = new ApplicationDbContext();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
         }
     }
 
