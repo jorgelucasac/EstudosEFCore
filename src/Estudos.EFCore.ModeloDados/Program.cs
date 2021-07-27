@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.Json;
 using Estudos.EFCore.ModeloDados.Data;
 using Estudos.EFCore.ModeloDados.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -14,8 +15,10 @@ namespace Estudos.EFCore.ModeloDados
             //PropagarDados();
             //Schema();
             //ConversorValores();
-            PropriedadesDeSombra();
-            TrabalhandoComPropriedadesDeSombra();
+            //PropriedadesDeSombra();
+            //TrabalhandoComPropriedadesDeSombra();
+
+            TiposDePropriedades();
         }
 
         static void Collations()
@@ -89,6 +92,36 @@ namespace Estudos.EFCore.ModeloDados
 
             //consuntando pela propriedade de sombra
             var departamentos = db.Departamentos.Where(p => EF.Property<DateTime>(p, "UltimaAtualizacao") < DateTime.Now).ToArray();
+        }
+
+
+        static void TiposDePropriedades()
+        {
+            using var db = new ApplicationDbContext();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+
+            var cliente = new Cliente
+            {
+                Nome = "Fulano de tal",
+                Telefone = "(79) 98888-9999",
+                Endereco = new Endereco { Bairro = "Centro", Cidade = "Sao Paulo" }
+            };
+
+            db.Clientes.Add(cliente);
+
+            db.SaveChanges();
+
+            var clientes = db.Clientes.AsNoTracking().ToList();
+
+            var options = new JsonSerializerOptions { WriteIndented = true };
+
+            clientes.ForEach(cli =>
+            {
+                var json = JsonSerializer.Serialize(cli, options);
+
+                Console.WriteLine(json);
+            });
         }
     }
 
