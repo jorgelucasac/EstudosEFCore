@@ -18,7 +18,8 @@ namespace Estudos.EFCore.ModeloDados
             //PropriedadesDeSombra();
             //TrabalhandoComPropriedadesDeSombra();
 
-            TiposDePropriedades();
+            //TiposDePropriedades();
+            Relacionamento1Para1();
         }
 
         static void Collations()
@@ -121,6 +122,33 @@ namespace Estudos.EFCore.ModeloDados
                 var json = JsonSerializer.Serialize(cli, options);
 
                 Console.WriteLine(json);
+            });
+        }
+
+
+        static void Relacionamento1Para1()
+        {
+            using var db = new ApplicationDbContext();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+
+            var estado = new Estado
+            {
+                Nome = "Sergipe",
+                Governador = new Governador { Nome = "Rafael Almeida" }
+            };
+
+            db.Estados.Add(estado);
+
+            db.SaveChanges();
+
+            var estados = db.Estados
+                //.Include(e=> e.Governador)
+                .AsNoTracking().ToList();
+
+            estados.ForEach(est =>
+            {
+                Console.WriteLine($"Estado: {est.Nome}, Governador: {est.Governador.Nome}");
             });
         }
     }

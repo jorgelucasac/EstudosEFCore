@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reflection;
+using Estudos.EFCore.ModeloDados.Configurations;
 using Estudos.EFCore.ModeloDados.Conversores;
 using Estudos.EFCore.ModeloDados.Domain;
 using Estudos.EFCore.ModeloDados.Helper;
@@ -128,29 +130,16 @@ namespace Estudos.EFCore.ModeloDados.Data
 
             #endregion
 
-            #region Owned Types
+            #region Aplicando Configurações
 
-            modelBuilder.Entity<Cliente>(c =>
-            {
-                //informa que o endereço não é uma tabela
-                //e que os campos da entidade endereço devem ser
-                //criados na tabela cliente
+            //forma 1
+            //modelBuilder.ApplyConfiguration(new ClienteConfiguration());
 
-                //forma 1
-                //c.OwnsOne(x => x.Endereco);
+            //forma 2
+            //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-                //forma 2 - informa o nome das colunas
-                c.OwnsOne(x => x.Endereco, and =>
-                {
-                    and.Property(p => p.Estado).HasColumnName("Estado");
-                    and.Property(p => p.Cidade).HasColumnName("Cidade");
-                    and.Property(p => p.Bairro).HasColumnName("Bairro");
-                    and.Property(p => p.Logradouro).HasColumnName("Logradouro");
-
-                    //cria uma tebela para o endereco - OPCIONAL
-                    and.ToTable("Endereco");
-                });
-            });
+            //forma 3
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
             #endregion
 

@@ -7,7 +7,7 @@
         public int Idade { get; set; }
         public string Partido { get; set; }
 
-        public int EstadoReference { get; set; }
+        public int EstadoId { get; set; }
         public Estado Estado { get; set; }
     }
 }
