@@ -8,5 +8,6 @@ namespace Estudos.EFCore.ModeloDados.Domain
         public int Id { get; set; }
         public string Nome { get; set; }
         public Governador Governador { get; set; }
+        public ICollection<Cidade> Cidades { get; } = new List<Cidade>();
     }
 }
