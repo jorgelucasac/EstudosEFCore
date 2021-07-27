@@ -153,6 +153,7 @@ namespace Estudos.EFCore.ModeloDados.Data
 
         public DbSet<Ator> Atores { get; set; }
         public DbSet<Filme> Filmes { get; set; }
+        public DbSet<Documento> Documentos { get; set; }
 
         public void EscreverLogSql(string sql)
         {

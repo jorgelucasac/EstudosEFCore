@@ -21,7 +21,9 @@ namespace Estudos.EFCore.ModeloDados
             //TiposDePropriedades();
             //Relacionamento1Para1();
             //Relacionamento1ParaMuitos();
-            RelacionamentoMuitosParaMuitos();
+            //RelacionamentoMuitosParaMuitos();
+
+            CampoDeApoio();
         }
 
         static void Collations()
@@ -110,7 +112,7 @@ namespace Estudos.EFCore.ModeloDados
             {
                 Nome = "Fulano de tal",
                 Telefone = "(79) 98888-9999",
-                Endereco = new Endereco {Bairro = "Centro", Cidade = "Sao Paulo"}
+                Endereco = new Endereco { Bairro = "Centro", Cidade = "Sao Paulo" }
             };
 
             db.Clientes.Add(cliente);
@@ -119,7 +121,7 @@ namespace Estudos.EFCore.ModeloDados
 
             var clientes = db.Clientes.AsNoTracking().ToList();
 
-            var options = new JsonSerializerOptions {WriteIndented = true};
+            var options = new JsonSerializerOptions { WriteIndented = true };
 
             clientes.ForEach(cli =>
             {
@@ -139,7 +141,7 @@ namespace Estudos.EFCore.ModeloDados
             var estado = new Estado
             {
                 Nome = "Sergipe",
-                Governador = new Governador {Nome = "Rafael Almeida"}
+                Governador = new Governador { Nome = "Rafael Almeida" }
             };
 
             db.Estados.Add(estado);
@@ -230,7 +232,25 @@ namespace Estudos.EFCore.ModeloDados
                 }
             }
         }
+
+        static void CampoDeApoio()
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                db.Database.EnsureDeleted();
+                db.Database.EnsureCreated();
+
+                var documento = new Documento();
+                documento.SetCpf("12345678933");
+
+                db.Documentos.Add(documento);
+                db.SaveChanges();
+
+                foreach (var doc in db.Documentos.AsNoTracking())
+                {
+                    Console.WriteLine($"CPF -> {doc.CPF()}");
+                }
+            }
+        }
     }
-
-
 }
