@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using Estudos.EFCore.ModeloDados.Data;
@@ -24,7 +25,8 @@ namespace Estudos.EFCore.ModeloDados
             //RelacionamentoMuitosParaMuitos();
 
             //CampoDeApoio();
-            ExemploTPH();
+            //ExemploTPH();
+            PacotesDePropriedades();
         }
 
         static void Collations()
@@ -294,5 +296,35 @@ namespace Estudos.EFCore.ModeloDados
                 }
             }
         }
+
+        static void PacotesDePropriedades()
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                db.Database.EnsureDeleted();
+                db.Database.EnsureCreated();
+
+                var configuracao = new Dictionary<string, object>
+                {
+                    ["Chave"] = "SenhaBancoDeDados",
+                    ["Valor"] = Guid.NewGuid().ToString()
+                };
+
+                db.Configuracoes.Add(configuracao);
+                db.SaveChanges();
+
+                var configuracoes = db
+                    .Configuracoes
+                    .AsNoTracking()
+                    .Where(p =>  p["Chave"] == "SenhaBancoDeDados")
+                    .ToArray();
+
+                foreach (var dic in configuracoes)
+                {
+                    Console.WriteLine($"Chave: {dic["Chave"]} - Valor: {dic["Valor"]}");
+                }
+            }
+        }
     }
 }
+
