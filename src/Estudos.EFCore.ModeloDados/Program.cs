@@ -19,9 +19,7 @@ namespace Estudos.EFCore.ModeloDados
             //TrabalhandoComPropriedadesDeSombra();
 
             //TiposDePropriedades();
-            //Relacionamento1Para1();
-
-            Relacionamento1ParaMuitos();
+            Relacionamento1Para1();
         }
 
         static void Collations()
@@ -50,7 +48,6 @@ namespace Estudos.EFCore.ModeloDados
         }
 
         static void ConversorValores() => Schema();
-
         static void ConversorCustomizado()
         {
             using var db = new ApplicationDbContext();
@@ -95,8 +92,7 @@ namespace Estudos.EFCore.ModeloDados
             //db.SaveChanges();
 
             //consuntando pela propriedade de sombra
-            var departamentos = db.Departamentos
-                .Where(p => EF.Property<DateTime>(p, "UltimaAtualizacao") < DateTime.Now).ToArray();
+            var departamentos = db.Departamentos.Where(p => EF.Property<DateTime>(p, "UltimaAtualizacao") < DateTime.Now).ToArray();
         }
 
 
@@ -110,7 +106,7 @@ namespace Estudos.EFCore.ModeloDados
             {
                 Nome = "Fulano de tal",
                 Telefone = "(79) 98888-9999",
-                Endereco = new Endereco {Bairro = "Centro", Cidade = "Sao Paulo"}
+                Endereco = new Endereco { Bairro = "Centro", Cidade = "Sao Paulo" }
             };
 
             db.Clientes.Add(cliente);
@@ -119,7 +115,7 @@ namespace Estudos.EFCore.ModeloDados
 
             var clientes = db.Clientes.AsNoTracking().ToList();
 
-            var options = new JsonSerializerOptions {WriteIndented = true};
+            var options = new JsonSerializerOptions { WriteIndented = true };
 
             clientes.ForEach(cli =>
             {
@@ -139,7 +135,7 @@ namespace Estudos.EFCore.ModeloDados
             var estado = new Estado
             {
                 Nome = "Sergipe",
-                Governador = new Governador {Nome = "Rafael Almeida"}
+                Governador = new Governador { Nome = "Rafael Almeida" }
             };
 
             db.Estados.Add(estado);
@@ -150,31 +146,12 @@ namespace Estudos.EFCore.ModeloDados
                 //.Include(e=> e.Governador)
                 .AsNoTracking().ToList();
 
-            estados.ForEach(est => { Console.WriteLine($"Estado: {est.Nome}, Governador: {est.Governador.Nome}"); });
-        }
-
-        static void Relacionamento1ParaMuitos()
-        {
-            using var db = new ApplicationDbContext();
-            db.Database.EnsureDeleted();
-            db.Database.EnsureCreated();
-
-            var estado = new Estado
+            estados.ForEach(est =>
             {
-                Nome = "Sergipe",
-                Governador = new Governador {Nome = "Rafael Almeida"}
-            };
-
-            estado.Cidades.Add(new Cidade {Nome = "Itabaiana"});
-
-            db.Estados.Add(estado);
-
-                
-
-            db.SaveChanges();
-            var estados = db.Estados.Include(a => a.Cidades).ToList();
+                Console.WriteLine($"Estado: {est.Nome}, Governador: {est.Governador.Nome}");
+            });
         }
-
-
     }
+
+
 }
