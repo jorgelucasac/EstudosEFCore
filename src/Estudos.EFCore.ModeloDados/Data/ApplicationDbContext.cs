@@ -155,6 +155,10 @@ namespace Estudos.EFCore.ModeloDados.Data
         public DbSet<Filme> Filmes { get; set; }
         public DbSet<Documento> Documentos { get; set; }
 
+        public DbSet<Pessoa> Pessoas { get; set; }
+        public DbSet<Instrutor> Instrutores { get; set; }
+        public DbSet<Aluno> Alunos { get; set; }
+
         public void EscreverLogSql(string sql)
         {
             Console.ForegroundColor = ConsoleColor.Blue;
