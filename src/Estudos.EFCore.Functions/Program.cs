@@ -11,6 +11,7 @@ namespace Estudos.EFCore.Functions
         static void Main(string[] args)
         {
             FuncoesDeDatas();
+            FuncaoLike();
         }
 
 
@@ -70,6 +71,42 @@ namespace Estudos.EFCore.Functions
                     Console.WriteLine(f);
                 }
 
+            }
+        }
+
+        static void FuncaoLike()
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                var script = db.Database.GenerateCreateScript();
+
+                Console.WriteLine(script);
+
+                var dados = db
+                    .Funcoes
+                    .AsNoTracking()
+                    //.Where(p => EF.Functions.Like(p.Descricao1, "Bo%"))
+                    //tudo que começa com 'Ba' ou 'Bo'
+                    .Where(p => EF.Functions.Like(p.Descricao1, "B[ao]%"))
+                    .Select(p => p.Descricao1)
+                    .ToArray();
+
+
+                var dadosContain = db
+                    .Funcoes
+                    .AsNoTracking()
+                    //.Where(p => p.Descricao1.StartsWith("Bo"))
+                    //não funciona
+                    .Where(p => p.Descricao1.StartsWith("B[ao]%"))
+                    .Select(p => p.Descricao1)
+                    .ToArray();
+
+
+                Console.WriteLine("Resultado:");
+                foreach (var descricao in dados)
+                {
+                    Console.WriteLine(descricao);
+                }
             }
         }
     }
