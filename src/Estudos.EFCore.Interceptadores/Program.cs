@@ -17,7 +17,7 @@ namespace Estudos.EFCore.Interceptadores
         {
             using (var db = new ApplicationDbContext())
             {
-                var funcaos = await db.Funcoes.ToListAsync();
+                var funcaos =  db.Funcoes.TagWith("Use NOLOCK").ToList();
                 foreach (var funcao in funcaos)
                 {
                     Console.WriteLine(funcao.Descricao1);
