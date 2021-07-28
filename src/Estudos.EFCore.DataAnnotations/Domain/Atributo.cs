@@ -23,14 +23,19 @@ namespace Estudos.EFCore.DataAnnotations.Domain
         public int Id { get; set; }
         public string Nome { get; set; }
 
+        [NotMapped]
+        public string PropriedadeNaoMapeada { get; set; }
+
         //informa qual a propriedade em voo esta relacionada com com essa propriedade
         [InverseProperty("AeroportoChegada")]
         public ICollection<Voo> VoosDeChegada { get; set; }
-       
+
         [InverseProperty("AeroportoPartida")]
         public ICollection<Voo> VoosDePartida { get; set; }
     }
 
+    //Infroma que a classe/entidade não deve ser mapeada para o banco de dados
+    [NotMapped]
     public class Voo
     {
         public int Id { get; set; }
