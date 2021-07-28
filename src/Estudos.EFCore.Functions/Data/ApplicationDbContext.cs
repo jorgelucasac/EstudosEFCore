@@ -44,6 +44,14 @@ namespace Estudos.EFCore.Functions.Data
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
             #endregion
 
+            modelBuilder
+                .Entity<Funcao>(conf =>
+                {
+                    conf.Property<string>("PropriedadeSombra")
+                        .HasColumnType("VARCHAR(100)")
+                        .HasDefaultValueSql("'Teste'");
+                });
+
         }
 
         public DbSet<Funcao> Funcoes  { get; set; }

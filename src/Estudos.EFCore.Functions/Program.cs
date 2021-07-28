@@ -12,7 +12,9 @@ namespace Estudos.EFCore.Functions
         {
             //FuncoesDeDatas();
             //FuncaoLike();
-            FuncaoDataLength();
+            //FuncaoDataLength();
+
+            FuncaoProperty();
         }
 
 
@@ -137,6 +139,32 @@ namespace Estudos.EFCore.Functions
                 Console.WriteLine("Resultado:");
 
                 Console.WriteLine(resultado);
+            }
+        }
+
+        static void FuncaoProperty()
+        {
+            ApagarCriarBancoDeDados();
+
+            using (var db = new ApplicationDbContext())
+            {
+                //consultando pela propriedade de sombra
+                var resultado = db
+                    .Funcoes
+                    //.AsNoTracking()
+                    .FirstOrDefault(p => EF.Property<string>(p, "PropriedadeSombra") == "Teste");
+
+                //obtendo o valor da propriedade sombra
+                //só funciona sem o AsNoTracking
+                //pq com sem o rastreamento da entidade o EF perde
+                //os valores das propriedades de sombra
+                var propriedadeSombra = db
+                    .Entry(resultado)
+                    .Property<string>("PropriedadeSombra")
+                    .CurrentValue;
+
+                Console.WriteLine("Resultado:");
+                Console.WriteLine(propriedadeSombra);
             }
         }
     }
