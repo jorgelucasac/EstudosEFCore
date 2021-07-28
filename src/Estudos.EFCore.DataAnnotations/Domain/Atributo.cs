@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Estudos.EFCore.DataAnnotations.Domain
@@ -14,6 +15,28 @@ namespace Estudos.EFCore.DataAnnotations.Domain
         [Required]
         [MaxLength(255)]
         public string Observacao { get; set; }
+
+    }
+
+    public class Aeroporto
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; }
+
+        //informa qual a propriedade em voo esta relacionada com com essa propriedade
+        [InverseProperty("AeroportoChegada")]
+        public ICollection<Voo> VoosDeChegada { get; set; }
+       
+        [InverseProperty("AeroportoPartida")]
+        public ICollection<Voo> VoosDePartida { get; set; }
+    }
+
+    public class Voo
+    {
+        public int Id { get; set; }
+        public string Descricao { get; set; }
+        public Aeroporto AeroportoChegada { get; set; }
+        public Aeroporto AeroportoPartida { get; set; }
 
     }
 }

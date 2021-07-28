@@ -48,6 +48,7 @@ namespace Estudos.EFCore.DataAnnotations.Data
         }
 
         public DbSet<Atributo> Atributos { get; set; }
+        public DbSet<Aeroporto> Aeroportos { get; set; }
         public void EscreverLogSql(string sql)
         {
             Console.ForegroundColor = ConsoleColor.Blue;
