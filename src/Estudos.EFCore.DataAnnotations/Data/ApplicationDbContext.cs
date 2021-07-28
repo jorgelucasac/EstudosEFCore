@@ -43,26 +43,11 @@ namespace Estudos.EFCore.DataAnnotations.Data
 
             //forma 3
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-
-
-            modelBuilder.SharedTypeEntity<Dictionary<string, object>>("Configuracoes", b =>
-            {
-                b.Property<int>("Id");
-
-                b.Property<string>("Chave")
-                    .HasColumnType("VARCHAR(40)")
-                    .IsRequired();
-
-                b.Property<string>("Valor")
-                    .HasColumnType("VARCHAR(255)")
-                    .IsRequired();
-            });
-
             #endregion
 
         }
 
-        
+        public DbSet<Atributo> Atributos { get; set; }
         public void EscreverLogSql(string sql)
         {
             Console.ForegroundColor = ConsoleColor.Blue;

@@ -13,7 +13,7 @@ namespace Estudos.EFCore.DataAnnotations.Domain
 
         [Required]
         [MaxLength(255)]
-        public string Observação { get; set; }
+        public string Observacao { get; set; }
 
     }
 }
