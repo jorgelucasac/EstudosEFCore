@@ -7,7 +7,7 @@ namespace Estudos.EFCore.Functions.Domain
     {
         public int Id { get; set; }
 
-        [Column(TypeName = "VARCHAR(100)")]
+        [Column(TypeName = "NVARCHAR(100)")]
         public string Descricao1 { get; set; }
         
         [Column(TypeName = "VARCHAR(100)")]

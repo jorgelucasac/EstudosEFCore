@@ -10,8 +10,9 @@ namespace Estudos.EFCore.Functions
     {
         static void Main(string[] args)
         {
-            FuncoesDeDatas();
-            FuncaoLike();
+            //FuncoesDeDatas();
+            //FuncaoLike();
+            FuncaoDataLength();
         }
 
 
@@ -107,6 +108,35 @@ namespace Estudos.EFCore.Functions
                 {
                     Console.WriteLine(descricao);
                 }
+            }
+        }
+
+        /// <summary>
+        /// consultar o total de bytes
+        /// </summary>
+        static void FuncaoDataLength()
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                var resultado = db
+                    .Funcoes
+                    .AsNoTracking()
+                    .Select(p => new
+                    {
+                        //DataLength - quantos bytes estão sendo utilizados pelo campo
+                        TotalBytesCampoData = EF.Functions.DataLength(p.Data1),
+                        TotalBytes1 = EF.Functions.DataLength(p.Descricao1),
+                        TotalBytes2 = EF.Functions.DataLength(p.Descricao2),
+                        //quantos caracteres estão sendo utilizados pelo campo
+                        //sem contar espações nas pontas, como um trim()
+                        Total1 = p.Descricao1.Length,
+                        Total2 = p.Descricao2.Length
+                    })
+                    .FirstOrDefault();
+
+                Console.WriteLine("Resultado:");
+
+                Console.WriteLine(resultado);
             }
         }
     }
