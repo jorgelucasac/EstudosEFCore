@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Estudos.EFCore.Interceptadores.Domain;
 using Estudos.EFCore.Interceptadores.Helper;
+using Estudos.EFCore.Interceptadores.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -25,7 +27,8 @@ namespace Estudos.EFCore.Interceptadores.Data
                 //habilitando visualização de dados sensiveis
                 .EnableSensitiveDataLogging()
                 //habilitando a exibição dos logs
-                .LogTo(EscreverLogSql, LogLevel.Information);
+                .LogTo(EscreverLogSql, LogLevel.Information)
+                .AddInterceptors(new InterceptadorDeComandos());
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,7 +36,7 @@ namespace Estudos.EFCore.Interceptadores.Data
 
         }
 
-      
+        public DbSet<Funcao> Funcoes { get; set; }
 
 
         public void EscreverLogSql(string sql)
