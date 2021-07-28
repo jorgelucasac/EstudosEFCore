@@ -8,12 +8,15 @@ namespace Estudos.EFCore.DataAnnotations.Domain
     [Table("TabelaAtributos")]
     //cria um indice no banco de dados com os campos informados
     [Index(new[] { nameof(Descricao), nameof(Id) }, IsUnique = true)]
+    [Comment("Comentário na tabela")]
     public class Atributo
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
         [Column("MinhaDescricao", TypeName = "VARCHAR(100)")]
+        [Comment("Comentário na coluna")]
         public string Descricao { get; set; }
 
         //[Required]
