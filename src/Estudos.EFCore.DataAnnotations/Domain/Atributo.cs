@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Estudos.EFCore.DataAnnotations.Domain
 {
     [Table("TabelaAtributos")]
+    //cria um indice no banco de dados com os campos informados
+    [Index(new[] { nameof(Descricao), nameof(Id) }, IsUnique = true)]
     public class Atributo
     {
         [Key]
