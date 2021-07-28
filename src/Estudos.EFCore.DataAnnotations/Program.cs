@@ -23,13 +23,13 @@ namespace Estudos.EFCore.DataAnnotations
 
                 Console.WriteLine(script);
 
-                //db.Atributos.Add(new Atributo
-                //{
-                //    Descricao = "Exemplo",
-                //    Observacao = "Observacao"
-                //});
+                db.Atributos.Add(new Atributo
+                {
+                    Descricao = "Exemplo",
+                    Observacao = "Observacao"
+                });
 
-                //db.SaveChanges();
+                db.SaveChanges();
             }
         }
     }

@@ -8,12 +8,15 @@ namespace Estudos.EFCore.DataAnnotations.Domain
     public class Atributo
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Column("MinhaDescricao", TypeName = "VARCHAR(100)")]
         public string Descricao { get; set; }
 
-        [Required]
+        //[Required]
         [MaxLength(255)]
+        //remove esse campo das instruções insert e update
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public string Observacao { get; set; }
 
     }
