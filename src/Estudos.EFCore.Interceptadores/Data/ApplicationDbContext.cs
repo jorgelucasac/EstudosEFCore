@@ -29,7 +29,8 @@ namespace Estudos.EFCore.Interceptadores.Data
                 //habilitando a exibição dos logs
                 .LogTo(EscreverLogSql, LogLevel.Information)
                 .AddInterceptors(new InterceptadorDeComandos())
-                .AddInterceptors(new InterceptadorDeConexao());
+                .AddInterceptors(new InterceptadorDeConexao())
+                .AddInterceptors(new InterceptadorPersistencia());
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
