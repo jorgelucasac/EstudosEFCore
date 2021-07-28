@@ -28,7 +28,8 @@ namespace Estudos.EFCore.Interceptadores.Data
                 .EnableSensitiveDataLogging()
                 //habilitando a exibição dos logs
                 .LogTo(EscreverLogSql, LogLevel.Information)
-                .AddInterceptors(new InterceptadorDeComandos());
+                .AddInterceptors(new InterceptadorDeComandos())
+                .AddInterceptors(new InterceptadorDeConexao());
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
