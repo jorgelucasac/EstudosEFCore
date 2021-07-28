@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -52,5 +53,14 @@ namespace Estudos.EFCore.DataAnnotations.Domain
         public Aeroporto AeroportoChegada { get; set; }
         public Aeroporto AeroportoPartida { get; set; }
 
+    }
+
+    //informa que a tabela/entidade não possui chave primária
+    [Keyless]
+    public class RelatorioFinanceiro
+    {
+        public string Descricao { get; set; }
+        public decimal Total { get; set; }
+        public DateTime Data { get; set; }
     }
 }
