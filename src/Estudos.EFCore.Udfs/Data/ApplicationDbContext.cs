@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Estudos.EFCore.Udfs.Domain;
 using Estudos.EFCore.Udfs.Funcoes;
 using Estudos.EFCore.Utils.Helper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -44,6 +46,23 @@ namespace Estudos.EFCore.Udfs.Data
                 .HasName("ConverterParaLetrasMaiusculas")
                 .HasSchema("dbo");
 
+            modelBuilder
+                .HasDbFunction(_dateDiff)
+                .HasName("DATEDIFF")
+                .HasTranslation(p =>
+                {
+                    var argumentos = p.ToList();
+
+                    var contante = (SqlConstantExpression)argumentos[0];
+                    argumentos[0] = new SqlFragmentExpression(contante.Value.ToString());
+
+                    return new SqlFunctionExpression("DATEDIFF", argumentos, false, new[] { false, false, false }, typeof(int), null);
+
+                })
+                .IsBuiltIn();
+
+
+
         }
 
         public DbSet<Livro> Livros { get; set; }
@@ -55,6 +74,10 @@ namespace Estudos.EFCore.Udfs.Data
 
         private static readonly MethodInfo _letrasMaiusculas = typeof(MinhasFuncoes)
             .GetRuntimeMethod(nameof(MinhasFuncoes.LetrasMaiusculas), new[] { typeof(string) });
+
+        private static MethodInfo _dateDiff = typeof(MinhasFuncoes)
+            .GetRuntimeMethod(nameof(MinhasFuncoes.DateDiff),
+                new[] { typeof(string), typeof(DateTime), typeof(DateTime) });
 
         //informa que será traduzido para a função LEFT do banco de dados
         //[DbFunction(name: "LEFT", IsBuiltIn = true)]

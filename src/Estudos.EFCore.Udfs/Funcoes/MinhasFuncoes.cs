@@ -21,6 +21,11 @@ namespace Estudos.EFCore.Udfs.Funcoes
             throw new NotImplementedException();
         }
 
+        public static int DateDiff(string identificador, DateTime dataInicial, DateTime dataFinal)
+        {
+            throw new NotImplementedException();
+        }
+
         public static void RegistarFuncoes(ModelBuilder modelBuilder)
         {
             //obtem todos os métodos que possuem o atrinuto DbFunctionAttribute
@@ -32,5 +37,6 @@ namespace Estudos.EFCore.Udfs.Funcoes
                 modelBuilder.HasDbFunction(funcao);
             }
         }
+
     }
 }

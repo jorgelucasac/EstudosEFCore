@@ -12,7 +12,9 @@ namespace Estudos.EFCore.Udfs
         static void Main(string[] args)
         {
             //FuncaoLEFT();
-            FuncaoDefinidaPeloUsuario();
+            //FuncaoDefinidaPeloUsuario();
+
+            DateDIFF();
         }
 
         /// <summary>
@@ -38,12 +40,13 @@ namespace Estudos.EFCore.Udfs
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
 
+                var diferenca = new Random().Next(1, 100) * -1;
                 db.Livros.Add(
                     new Livro
                     {
                         Titulo = "Introdução ao Entity Framework Core",
                         Autor = "Rafael",
-                        CadastradoEm = DateTime.Now.AddDays(-1)
+                        CadastradoEm = DateTime.Now.AddDays(diferenca)
                     });
 
                 db.SaveChanges();
@@ -71,6 +74,27 @@ namespace Estudos.EFCore.Udfs
             foreach (var parteTitulo in resultado)
             {
                 Console.WriteLine(parteTitulo);
+            }
+        }
+
+        static void DateDIFF()
+        {
+            CadastrarLivro();
+
+            using var db = new ApplicationDbContext();
+
+            //var resultado = db
+            //    .Livros
+            //    .Select(p => EF.Functions.DateDiffDay(p.CadastradoEm, DateTime.Now));
+
+
+            var resultado = db
+                .Livros
+                .Select(p => MinhasFuncoes.DateDiff("DAY", p.CadastradoEm, DateTime.Now));
+
+            foreach (var diff in resultado)
+            {
+                Console.WriteLine(diff);
             }
         }
     }
