@@ -19,7 +19,9 @@ namespace Estudos.EFCore.Performance.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseSqlServer(_configuration.GetConnectionString("SqlServerConnection"))
+                .UseSqlServer(_configuration.GetConnectionString("SqlServerConnection"),
+                    //habilitando a quantidade de dados por comando enviados ao banco de dados
+                    opt => opt.MaxBatchSize(50))
                 //informando o compotamento do Trackin para todas as consultas
                 //.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution)
                 //habilitando detalhes de erros

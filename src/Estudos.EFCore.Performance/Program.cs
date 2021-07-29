@@ -14,8 +14,11 @@ namespace Estudos.EFCore.Performance
             //ConsultaRastreada();
             //ConsultaNaoRastreada();
             //ConsultaComResolucaoDeIdentidade();
+            //ConsultaProjetadaERastreada();
 
-            ConsultaProjetadaERastreada();
+            //Inserir_200_Departamentos_Com_1MB();
+
+            ConsultaProjetada();
         }
 
         /// <summary>
@@ -99,9 +102,25 @@ namespace Estudos.EFCore.Performance
                 })
                 .ToList();
 
-            departamentos[0].Departamento.Descricao = "Departamento Teste Atualizado "+DateTime.Now;
+            departamentos[0].Departamento.Descricao = "Departamento Teste Atualizado " + DateTime.Now;
 
             db.SaveChanges();
+        }
+
+        /// <summary>
+        /// reduzindo o consumo de memória com consulta projetada
+        /// </summary>
+        static void ConsultaProjetada()
+        {
+            using var db = new ApplicationDbContext();
+
+            //var departamentos = db.Departamentos.ToArray();
+            var departamentos = db.Departamentos.Select(p => p.Descricao).ToArray();
+            //WorkingSet64 - o processo que esta sendo executado
+            // 1024 / 1024 convertendo a memória utilizada para megas
+            var memoria = (System.Diagnostics.Process.GetCurrentProcess().WorkingSet64 / 1024 / 1024) + " MB";
+
+            Console.WriteLine(memoria);
         }
 
         static void Setup()
@@ -123,6 +142,32 @@ namespace Estudos.EFCore.Performance
             });
 
             db.SaveChanges();
+        }
+
+        static void Inserir_200_Departamentos_Com_1MB()
+        {
+            using var db = new ApplicationDbContext();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+
+            var random = new Random();
+
+            db.Departamentos.AddRange(Enumerable.Range(1, 200).Select(p =>
+                new Departamento
+                {
+                    Descricao = "Departamento Teste",
+                    Image = GetBytes()
+                }));
+
+            db.SaveChanges();
+
+            byte[] GetBytes()
+            {
+                var buffer = new byte[1024 * 1024];
+                random.NextBytes(buffer);
+
+                return buffer;
+            }
         }
     }
 }
