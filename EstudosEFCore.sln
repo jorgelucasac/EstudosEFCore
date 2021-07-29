@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.EFCore.Utils", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.EFCore.Transacoes", "src\Estudos.EFCore.Transacoes\Estudos.EFCore.Transacoes.csproj", "{87DB099C-C756-44C4-B4C0-2008DA99D661}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estudos.EFCore.Udfs", "src\Estudos.EFCore.Udfs\Estudos.EFCore.Udfs.csproj", "{EA3BE1D4-8BBE-4462-A59E-408B89B391F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{87DB099C-C756-44C4-B4C0-2008DA99D661}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87DB099C-C756-44C4-B4C0-2008DA99D661}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87DB099C-C756-44C4-B4C0-2008DA99D661}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA3BE1D4-8BBE-4462-A59E-408B89B391F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA3BE1D4-8BBE-4462-A59E-408B89B391F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA3BE1D4-8BBE-4462-A59E-408B89B391F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA3BE1D4-8BBE-4462-A59E-408B89B391F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
