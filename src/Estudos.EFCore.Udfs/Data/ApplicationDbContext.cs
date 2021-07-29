@@ -53,8 +53,8 @@ namespace Estudos.EFCore.Udfs.Data
                 {
                     var argumentos = p.ToList();
 
-                    var contante = (SqlConstantExpression)argumentos[0];
-                    argumentos[0] = new SqlFragmentExpression(contante.Value.ToString());
+                    var constante = (SqlConstantExpression)argumentos[0];
+                    argumentos[0] = new SqlFragmentExpression(constante.Value.ToString());
 
                     return new SqlFunctionExpression("DATEDIFF", argumentos, false, new[] { false, false, false }, typeof(int), null);
 
@@ -68,9 +68,9 @@ namespace Estudos.EFCore.Udfs.Data
         public DbSet<Livro> Livros { get; set; }
 
 
-        private static readonly MethodInfo _funcaoLeftDb = 
+        private static readonly MethodInfo _funcaoLeftDb =
             typeof(MinhasFuncoes).GetRuntimeMethod(nameof(MinhasFuncoes.Left),
-            new[] {typeof(string), typeof(int)})!;
+            new[] { typeof(string), typeof(int) })!;
 
         private static readonly MethodInfo _letrasMaiusculas = typeof(MinhasFuncoes)
             .GetRuntimeMethod(nameof(MinhasFuncoes.LetrasMaiusculas), new[] { typeof(string) });
