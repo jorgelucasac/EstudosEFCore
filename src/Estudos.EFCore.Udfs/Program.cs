@@ -2,6 +2,7 @@
 using System.Linq;
 using Estudos.EFCore.Udfs.Data;
 using Estudos.EFCore.Udfs.Domain;
+using Estudos.EFCore.Udfs.Funcoes;
 
 namespace Estudos.EFCore.Udfs
 {
@@ -18,7 +19,7 @@ namespace Estudos.EFCore.Udfs
 
             using var db = new ApplicationDbContext();
 
-            var resultado = db.Livros.Select(p => ApplicationDbContext.Left(p.Titulo, 10));
+            var resultado = db.Livros.Select(p => MinhasFuncoes.Left(p.Titulo, 10));
             foreach (var parteTitulo in resultado)
             {
                 Console.WriteLine(parteTitulo);
