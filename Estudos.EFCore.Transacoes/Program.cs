@@ -9,11 +9,12 @@ namespace Estudos.EFCore.Transacoes
     {
         static void Main(string[] args)
         {
-            ComportamentoPadrao();
+            //ComportamentoPadrao();
+            GerenciandoTransacaoManualmente();
         }
 
         /// <summary>
-        /// por padrão, todas as operaçãos são execuatadas dentro de uma transação pelo EFCore
+        /// por padrão, todas as operações são execuatadas dentro de uma transação pelo EFCore
         /// </summary>
         static void ComportamentoPadrao()
         {
@@ -50,6 +51,37 @@ namespace Estudos.EFCore.Transacoes
                     });
 
                 db.SaveChanges();
+            }
+        }
+
+
+        static void GerenciandoTransacaoManualmente()
+        {
+            CadastrarLivro();
+
+            using (var db = new ApplicationDbContext())
+            {
+
+                //iniciando a transação
+                var transacao = db.Database.BeginTransaction();
+
+                var livro = db.Livros.FirstOrDefault(p => p.Id == 1);
+                livro.Autor = "Rafael Almeida";
+                db.SaveChanges();
+
+                Console.ReadKey();
+
+                db.Livros.Add(
+                    new Livro
+                    {
+                        Titulo = "Dominando o Entity Framework Core",
+                        Autor = "Rafael Almeida"
+                    });
+
+                db.SaveChanges();
+
+                //caso não seja chamado o commit o EFCore faz o rollback automaticamente
+                transacao.Commit();
             }
         }
     }
