@@ -11,9 +11,11 @@ namespace Estudos.EFCore.Performance
         static void Main(string[] args)
         {
             //Setup();
-            ConsultaRastreada();
+            //ConsultaRastreada();
             //ConsultaNaoRastreada();
             //ConsultaComResolucaoDeIdentidade();
+
+            ConsultaProjetadaERastreada();
         }
 
         /// <summary>
@@ -56,6 +58,9 @@ namespace Estudos.EFCore.Performance
                 .ToList();
         }
 
+        /// <summary>
+        /// configurando o tracking das consultas
+        /// </summary>
         static void ConsultaCustomizada()
         {
             using var db = new ApplicationDbContext();
@@ -70,6 +75,33 @@ namespace Estudos.EFCore.Performance
                 //.AsNoTrackingWithIdentityResolution()
                 .Include(p => p.Departamento)
                 .ToList();
+        }
+
+
+        /// <summary>
+        /// popr padrão consultas projetadas não são rastreadas,
+        /// 
+        /// mas mesmo que seja retornado um objeto anônimo, se uma entidade for retonada
+        /// ela será rastreada por ser uma entidade
+        /// </summary>
+        static void ConsultaProjetadaERastreada()
+        {
+            using var db = new ApplicationDbContext();
+
+            var departamentos = db.Departamentos
+                //.AsTracking()
+                .Include(p => p.Funcionarios)
+                .Select(p => new
+                {
+                    //retonarnano a entidade (p)
+                    Departamento = p,
+                    TotalFuncionarios = p.Funcionarios.Count()
+                })
+                .ToList();
+
+            departamentos[0].Departamento.Descricao = "Departamento Teste Atualizado "+DateTime.Now;
+
+            db.SaveChanges();
         }
 
         static void Setup()

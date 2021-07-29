@@ -21,7 +21,7 @@ namespace Estudos.EFCore.Performance.Data
             optionsBuilder
                 .UseSqlServer(_configuration.GetConnectionString("SqlServerConnection"))
                 //informando o compotamento do Trackin para todas as consultas
-                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution)
+                //.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution)
                 //habilitando detalhes de erros
                 .EnableDetailedErrors()
                 //habilitando visualização de dados sensiveis
