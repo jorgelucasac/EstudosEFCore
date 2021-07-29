@@ -10,7 +10,8 @@ namespace Estudos.EFCore.Transacoes
         static void Main(string[] args)
         {
             //ComportamentoPadrao();
-            GerenciandoTransacaoManualmente();
+            //GerenciandoTransacaoManualmente();
+            ReverterTransacao();
         }
 
         /// <summary>
@@ -82,6 +83,40 @@ namespace Estudos.EFCore.Transacoes
 
                 //caso não seja chamado o commit o EFCore faz o rollback automaticamente
                 transacao.Commit();
+            }
+        }
+
+
+        static void ReverterTransacao()
+        {
+            CadastrarLivro();
+
+            using (var db = new ApplicationDbContext())
+            {
+                var transacao = db.Database.BeginTransaction();
+
+                try
+                {
+                    var livro = db.Livros.FirstOrDefault(p => p.Id == 1);
+                    livro.Autor = "Rafael Almeida";
+                    db.SaveChanges();
+
+                    db.Livros.Add(
+                        new Livro
+                        {
+                            Titulo = "Dominando o Entity Framework Core",
+                            Autor = "Rafael Almeida".PadLeft(16, '*')
+                        });
+
+                    db.SaveChanges();
+
+                    transacao.Commit();
+                }
+                catch (Exception e)
+                {
+                    transacao.Rollback();
+                }
+
             }
         }
     }
