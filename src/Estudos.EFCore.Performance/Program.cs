@@ -56,6 +56,22 @@ namespace Estudos.EFCore.Performance
                 .ToList();
         }
 
+        static void ConsultaCustomizada()
+        {
+            using var db = new ApplicationDbContext();
+
+            //alterando o tracking para a instância do DbContext
+            db.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+
+            var funcionarios = db.Funcionarios
+                //alterando o tracking para a consulta
+                //.AsTracking()
+                //.AsNoTracking()
+                //.AsNoTrackingWithIdentityResolution()
+                .Include(p => p.Departamento)
+                .ToList();
+        }
+
         static void Setup()
         {
             using var db = new ApplicationDbContext();
