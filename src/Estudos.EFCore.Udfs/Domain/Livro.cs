@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Estudos.EFCore.Udfs.Domain
 {
@@ -9,5 +10,8 @@ namespace Estudos.EFCore.Udfs.Domain
 
         [Column(TypeName = "VARCHAR(15)")]
         public string Autor { get; set; }
+        public DateTime CadastradoEm { get; set; }
+
+
     }
 }
