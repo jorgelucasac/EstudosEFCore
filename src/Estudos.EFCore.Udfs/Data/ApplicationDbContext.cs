@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Estudos.EFCore.Udfs.Domain;
 using Estudos.EFCore.Udfs.Funcoes;
 using Estudos.EFCore.Utils.Helper;
@@ -31,7 +32,13 @@ namespace Estudos.EFCore.Udfs.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            MinhasFuncoes.RegistarFuncoes(modelBuilder);
+            //registrando as funções
+            //MinhasFuncoes.RegistarFuncoes(modelBuilder);
+
+            modelBuilder.HasDbFunction(typeof(MinhasFuncoes).GetRuntimeMethod("Left",
+                    new[] {typeof(string), typeof(int)})!)
+                .HasName("LEFT")//informa o nome da função no banco
+                .IsBuiltIn();// informa que é uma função do BD
         }
 
         public DbSet<Livro> Livros { get; set; }

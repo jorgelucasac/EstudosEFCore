@@ -6,6 +6,8 @@ namespace Estudos.EFCore.Udfs.Funcoes
 {
     public class MinhasFuncoes
     {
+        //com esse atributo é possível traduzuzir o método para uma função do BD
+        //assim, ao chamar o método o EFCore vai chamar a função do banco
         [DbFunction(name: "LEFT", IsBuiltIn = true)]
         public static string Left(string dados, int quantidade)
         {
