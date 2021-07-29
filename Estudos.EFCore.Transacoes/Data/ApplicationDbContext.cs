@@ -1,4 +1,5 @@
 ﻿using System;
+using Estudos.EFCore.Transacoes.Domain;
 using Estudos.EFCore.Transacoes.Helper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +30,7 @@ namespace Estudos.EFCore.Transacoes.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) { }
 
-
+        public DbSet<Livro> Livros { get; set; }
 
         public void EscreverLogSql(string sql)
         {
