@@ -25,10 +25,7 @@ namespace Estudos.EFCore.Performance.Data
                 //habilitando visualização de dados sensiveis
                 .EnableSensitiveDataLogging()
                 //habilitando a exibição dos logs
-                .LogTo(EscreverLogSql, LogLevel.Information)
-                .AddInterceptors(new InterceptadorDeComandos())
-                .AddInterceptors(new InterceptadorDeConexao())
-                .AddInterceptors(new InterceptadorPersistencia());
+                .LogTo(EscreverLogSql, LogLevel.Information);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,7 +33,8 @@ namespace Estudos.EFCore.Performance.Data
 
         }
 
-        public DbSet<Funcao> Funcoes { get; set; }
+        public DbSet<Departamento> Departamentos { get; set; }
+        public DbSet<Funcionario> Funcionarios { get; set; }
 
 
         public void EscreverLogSql(string sql)
