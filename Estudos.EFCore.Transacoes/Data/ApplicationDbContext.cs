@@ -1,6 +1,6 @@
 ﻿using System;
 using Estudos.EFCore.Transacoes.Domain;
-using Estudos.EFCore.Transacoes.Helper;
+using Estudos.EFCore.Utils.Helper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Estudos.EFCore.Functions.Helper
+namespace Estudos.EFCore.Utils.Helper
 {
     public sealed class ConfigurationHelper
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Estudos.EFCore.Infraestrutura.Domain;
-using Estudos.EFCore.Infraestrutura.Helper;
+using Estudos.EFCore.Utils.Helper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;

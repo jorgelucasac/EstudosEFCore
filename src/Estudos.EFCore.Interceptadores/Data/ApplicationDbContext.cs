@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using Estudos.EFCore.Interceptadores.Domain;
-using Estudos.EFCore.Interceptadores.Helper;
 using Estudos.EFCore.Interceptadores.Interceptors;
+using Estudos.EFCore.Utils.Helper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

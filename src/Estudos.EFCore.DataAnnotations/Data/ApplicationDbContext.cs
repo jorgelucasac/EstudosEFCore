@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Estudos.EFCore.DataAnnotations.Domain;
-using Estudos.EFCore.DataAnnotations.Helper;
+using Estudos.EFCore.Utils.Helper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

@@ -4,7 +4,7 @@ using System.Reflection;
 using Estudos.EFCore.ModeloDados.Configurations;
 using Estudos.EFCore.ModeloDados.Conversores;
 using Estudos.EFCore.ModeloDados.Domain;
-using Estudos.EFCore.ModeloDados.Helper;
+using Estudos.EFCore.Utils.Helper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
