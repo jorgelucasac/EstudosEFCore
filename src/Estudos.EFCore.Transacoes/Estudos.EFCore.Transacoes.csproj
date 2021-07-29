@@ -10,8 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Estudos.EFCore.Utils\Estudos.EFCore.Utils.csproj" />
+    <ProjectReference Include="..\Estudos.EFCore.Utils\Estudos.EFCore.Utils.csproj" />
   </ItemGroup>
+
+
 
   <ItemGroup>
     <None Update="appsettings.json">
