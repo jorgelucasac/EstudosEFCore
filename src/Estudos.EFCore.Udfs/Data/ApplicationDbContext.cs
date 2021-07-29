@@ -35,15 +35,26 @@ namespace Estudos.EFCore.Udfs.Data
             //registrando as funções
             //MinhasFuncoes.RegistarFuncoes(modelBuilder);
 
-            modelBuilder.HasDbFunction(typeof(MinhasFuncoes).GetRuntimeMethod("Left",
-                    new[] {typeof(string), typeof(int)})!)
+            modelBuilder.HasDbFunction(_funcaoLeftDb)
                 .HasName("LEFT")//informa o nome da função no banco
-                .IsBuiltIn();// informa que é uma função do BD
+                .IsBuiltIn();// informa que é uma função nativa do BD
+
+            modelBuilder
+                .HasDbFunction(_letrasMaiusculas)
+                .HasName("ConverterParaLetrasMaiusculas")
+                .HasSchema("dbo");
+
         }
 
         public DbSet<Livro> Livros { get; set; }
 
 
+        private static readonly MethodInfo _funcaoLeftDb = 
+            typeof(MinhasFuncoes).GetRuntimeMethod(nameof(MinhasFuncoes.Left),
+            new[] {typeof(string), typeof(int)})!;
+
+        private static readonly MethodInfo _letrasMaiusculas = typeof(MinhasFuncoes)
+            .GetRuntimeMethod(nameof(MinhasFuncoes.LetrasMaiusculas), new[] { typeof(string) });
 
         //informa que será traduzido para a função LEFT do banco de dados
         //[DbFunction(name: "LEFT", IsBuiltIn = true)]

@@ -3,6 +3,7 @@ using System.Linq;
 using Estudos.EFCore.Udfs.Data;
 using Estudos.EFCore.Udfs.Domain;
 using Estudos.EFCore.Udfs.Funcoes;
+using Microsoft.EntityFrameworkCore;
 
 namespace Estudos.EFCore.Udfs
 {
@@ -10,9 +11,13 @@ namespace Estudos.EFCore.Udfs
     {
         static void Main(string[] args)
         {
-           FuncaoLEFT();
+            //FuncaoLEFT();
+            FuncaoDefinidaPeloUsuario();
         }
 
+        /// <summary>
+        /// utilizando uma função nativa do BD
+        /// </summary>
         static void FuncaoLEFT()
         {
             CadastrarLivro();
@@ -42,6 +47,30 @@ namespace Estudos.EFCore.Udfs
                     });
 
                 db.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// utilizando uma função criada pelo usuário
+        /// </summary>
+        static void FuncaoDefinidaPeloUsuario()
+        {
+            CadastrarLivro();
+
+            using var db = new ApplicationDbContext();
+
+            db.Database.ExecuteSqlRaw(@"
+                CREATE FUNCTION ConverterParaLetrasMaiusculas(@dados VARCHAR(100))
+                RETURNS VARCHAR(100)
+                BEGIN
+                    RETURN UPPER(@dados)
+                END");
+
+
+            var resultado = db.Livros.Select(p => MinhasFuncoes.LetrasMaiusculas(p.Titulo));
+            foreach (var parteTitulo in resultado)
+            {
+                Console.WriteLine(parteTitulo);
             }
         }
     }

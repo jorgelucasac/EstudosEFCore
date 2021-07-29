@@ -14,6 +14,13 @@ namespace Estudos.EFCore.Udfs.Funcoes
             throw new NotImplementedException();
         }
 
+
+
+        public static string LetrasMaiusculas(string dados)
+        {
+            throw new NotImplementedException();
+        }
+
         public static void RegistarFuncoes(ModelBuilder modelBuilder)
         {
             //obtem todos os métodos que possuem o atrinuto DbFunctionAttribute
