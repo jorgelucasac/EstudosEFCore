@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Estudos.EFCore.Migracaoes
+namespace Estudos.EFCore.Migracoes
 {
     class Program
     {

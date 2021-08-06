@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.EFCore.Udfs", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.EFCore.Performance", "src\Estudos.EFCore.Performance\Estudos.EFCore.Performance.csproj", "{689A5501-4400-4619-BBE6-2811D2A32B54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estudos.EFCore.Migracaoes", "src\Estudos.EFCore.Migracaoes\Estudos.EFCore.Migracaoes.csproj", "{B3AA40FA-E05D-46E1-8318-C995EE479AAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estudos.EFCore.Migracoes", "src\Estudos.EFCore.Migracaoes\Estudos.EFCore.Migracoes.csproj", "{B3AA40FA-E05D-46E1-8318-C995EE479AAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

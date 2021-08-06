@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Reflection;
+using Estudos.EFCore.Migracoes.Domain;
 using Estudos.EFCore.Utils.Helper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Estudos.EFCore.Migracaoes.Data
+namespace Estudos.EFCore.Migracoes.Data
 {
     public class ApplicationDbContext : DbContext
     {
@@ -15,6 +15,8 @@ namespace Estudos.EFCore.Migracaoes.Data
         {
             _configuration = ConfigurationHelper.ObterConfiguration();
         }
+
+        public DbSet<Pessoa> Pessoas { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -28,7 +30,19 @@ namespace Estudos.EFCore.Migracaoes.Data
                 .LogTo(EscreverLogSql, LogLevel.Information);
         }
 
-       
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Pessoa>(conf =>
+            {
+                conf.HasKey(p => p.Id);
+                conf.Property(p => p.Nome)
+                    .IsRequired()
+                    .HasMaxLength(60)
+                    .IsUnicode(false);// irá criar tipo varchar
+            });
+        }
+
+
         public void EscreverLogSql(string sql)
         {
             Console.ForegroundColor = ConsoleColor.Blue;
