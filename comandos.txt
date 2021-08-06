@@ -1,0 +1,3 @@
+dotnet tool install --global dotnet-ef --version 5.0.8
+dotnet tool update --global dotnet-ef --version 5.0.8
+dotnet tool uninstall --global dotnet-ef
