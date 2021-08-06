@@ -3,4 +3,8 @@ dotnet tool update --global dotnet-ef --version 5.0.8
 dotnet tool uninstall --global dotnet-ef
 
 
-Script-Migration -Idempotent -Output meuscript.sql
+Add-Migration NomeMigracao // cria uma migração
+Update-Database //aplica as migrações pendentes
+Update-Database NomeMigracao //aplica as alterações até a migração informada 
+Remove-Migration //remove os arquivos de migração da ultima migração
+Script-Migration -Idempotent -Output meuscript.sql //gerra um script
