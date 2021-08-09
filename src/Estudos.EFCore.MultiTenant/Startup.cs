@@ -2,6 +2,8 @@ using System;
 using System.Threading.Tasks;
 using Estudos.EFCore.MultiTenant.Data;
 using Estudos.EFCore.MultiTenant.Domain;
+using Estudos.EFCore.MultiTenant.Middlewares;
+using Estudos.EFCore.MultiTenant.Provider;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +45,7 @@ namespace Estudos.EFCore.MultiTenant
             });
 
             services.AddScoped<ApplicationDbContext>();
+            services.AddScoped<TenantData>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -54,34 +57,35 @@ namespace Estudos.EFCore.MultiTenant
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MultiTenant v1"));
             }
 
-            InicarBancoDeDados(app);
+            //InicarBancoDeDados(app);
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthorization();
 
+            app.UseMiddleware<TenantMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
         }
 
-        private void InicarBancoDeDados(IApplicationBuilder app)
-        {
-            using var db = app.ApplicationServices
-                .CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        //private void InicarBancoDeDados(IApplicationBuilder app)
+        //{
+        //    using var db = app.ApplicationServices
+        //        .CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-            db.Database.EnsureDeleted();
-            db.Database.EnsureCreated();
+        //    db.Database.EnsureDeleted();
+        //    db.Database.EnsureCreated();
 
-            for (var i = 0; i < 5; i++)
-            {
-                db.Pessoas.Add(new Pessoa { Nome = $"Pessoa {i}" });
-                db.Produtos.Add(new Produto { Descricao = $"Produto {i}" });
-            }
+        //    for (var i = 0; i < 5; i++)
+        //    {
+        //        db.Pessoas.Add(new Pessoa { Nome = $"Pessoa {i}" });
+        //        db.Produtos.Add(new Produto { Descricao = $"Produto {i}" });
+        //    }
 
-            db.SaveChanges();
-        }
+        //    db.SaveChanges();
+        //}
     }
 }

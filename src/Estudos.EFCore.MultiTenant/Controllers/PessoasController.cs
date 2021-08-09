@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Estudos.EFCore.MultiTenant.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/{tenant}/[controller]")]
     public class PessoasController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -19,7 +19,7 @@ namespace Estudos.EFCore.MultiTenant.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Pessoa>> Index()
+        public async Task<List<Pessoa>> Get()
         {
             return await _context.Pessoas.ToListAsync();
         }
