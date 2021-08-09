@@ -9,9 +9,15 @@ namespace Estudos.EFCore.MultiTenant.Data
     {
         private readonly TenantData _tenantData;
 
+        public readonly TenantData TenantData;
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, TenantData tenantData) : base(options)
         {
+            //forma 01 - campos nas tabelas
             _tenantData = tenantData;
+
+            //forma 02
+            TenantData = tenantData;
         }
 
         public DbSet<Pessoa> Pessoas { get; set; }
@@ -19,6 +25,7 @@ namespace Estudos.EFCore.MultiTenant.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema(TenantData.TenantId);
 
             modelBuilder.Entity<Pessoa>().HasData(
                 new Pessoa { Id = 1, Nome = "Pessoa 1", TenantId = "tenant-1" },
@@ -30,8 +37,9 @@ namespace Estudos.EFCore.MultiTenant.Data
                 new Produto { Id = 2, Descricao = "Descricao 2", TenantId = "tenant-2" },
                 new Produto { Id = 3, Descricao = "Descricao 3", TenantId = "tenant-2" });
 
-            modelBuilder.Entity<Pessoa>().HasQueryFilter(p=>p.TenantId == _tenantData.TenantId);
-            modelBuilder.Entity<Produto>().HasQueryFilter(p=>p.TenantId == _tenantData.TenantId);
+            //forma 01
+            //modelBuilder.Entity<Pessoa>().HasQueryFilter(p => p.TenantId == _tenantData.TenantId);
+            //modelBuilder.Entity<Produto>().HasQueryFilter(p => p.TenantId == _tenantData.TenantId);
 
         }
 

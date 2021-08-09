@@ -1,12 +1,13 @@
 using System;
-using System.Threading.Tasks;
 using Estudos.EFCore.MultiTenant.Data;
-using Estudos.EFCore.MultiTenant.Domain;
+using Estudos.EFCore.MultiTenant.Data.Interceptors;
+using Estudos.EFCore.MultiTenant.Data.ModelFactory;
 using Estudos.EFCore.MultiTenant.Middlewares;
 using Estudos.EFCore.MultiTenant.Provider;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,15 +34,35 @@ namespace Estudos.EFCore.MultiTenant
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MultiTenant", Version = "v1" });
             });
 
-            services.AddDbContext<ApplicationDbContext>(opt =>
+            #region forma 01
+            //services.AddDbContext<ApplicationDbContext>(opt =>
+            //{
+            //    opt.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"))
+            //        //habilitando detalhes de erros
+            //        .EnableDetailedErrors()
+            //        //habilitando visualização de dados sensiveis
+            //        .EnableSensitiveDataLogging()
+            //        //habilitando a exibição dos logs
+            //        .LogTo(Console.WriteLine, LogLevel.Information);
+            //});
+            #endregion
+
+
+            services.AddScoped<StrategySchemaInterceptor>();
+            services.AddDbContext<ApplicationDbContext>((provider, opt) =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"))
+                    .ReplaceService<IModelCacheKeyFactory, StrategySchemaModelCacheKey>()
                     //habilitando detalhes de erros
                     .EnableDetailedErrors()
                     //habilitando visualização de dados sensiveis
                     .EnableSensitiveDataLogging()
                     //habilitando a exibição dos logs
                     .LogTo(Console.WriteLine, LogLevel.Information);
+
+                //forma 02 - utilizando interceptor
+                //var interceptor = provider.GetRequiredService<StrategySchemaInterceptor>();
+                //opt.AddInterceptors(interceptor);
             });
 
             services.AddScoped<ApplicationDbContext>();
