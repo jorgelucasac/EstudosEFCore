@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.EFCore.Transacoes",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.EFCore.Udfs", "src\Estudos.EFCore.Udfs\Estudos.EFCore.Udfs.csproj", "{EA3BE1D4-8BBE-4462-A59E-408B89B391F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estudos.EFCore.Performance", "src\Estudos.EFCore.Performance\Estudos.EFCore.Performance.csproj", "{689A5501-4400-4619-BBE6-2811D2A32B54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.EFCore.Performance", "src\Estudos.EFCore.Performance\Estudos.EFCore.Performance.csproj", "{689A5501-4400-4619-BBE6-2811D2A32B54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estudos.EFCore.Migracoes", "src\Estudos.EFCore.Migracaoes\Estudos.EFCore.Migracoes.csproj", "{B3AA40FA-E05D-46E1-8318-C995EE479AAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{689A5501-4400-4619-BBE6-2811D2A32B54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{689A5501-4400-4619-BBE6-2811D2A32B54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{689A5501-4400-4619-BBE6-2811D2A32B54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3AA40FA-E05D-46E1-8318-C995EE479AAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3AA40FA-E05D-46E1-8318-C995EE479AAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3AA40FA-E05D-46E1-8318-C995EE479AAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3AA40FA-E05D-46E1-8318-C995EE479AAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
