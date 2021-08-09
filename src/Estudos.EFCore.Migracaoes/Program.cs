@@ -1,12 +1,22 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Estudos.EFCore.Migracoes.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Estudos.EFCore.Migracoes
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            await using var db = new ApplicationDbContext();
+
+            var migracoes = await db.Database.GetPendingMigrationsAsync();
+            foreach (var migracao in migracoes)
+            {
+                Console.WriteLine(migracao);
+            }
+
         }
     }
 }
