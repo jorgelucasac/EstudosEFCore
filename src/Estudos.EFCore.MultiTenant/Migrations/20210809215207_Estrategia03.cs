@@ -2,16 +2,12 @@
 
 namespace Estudos.EFCore.MultiTenant.Migrations
 {
-    public partial class EstrategiaMultSchema : Migration
+    public partial class Estrategia03 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "dbo");
-
             migrationBuilder.CreateTable(
                 name: "Pessoas",
-                schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -26,7 +22,6 @@ namespace Estudos.EFCore.MultiTenant.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Produtos",
-                schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -40,7 +35,6 @@ namespace Estudos.EFCore.MultiTenant.Migrations
                 });
 
             migrationBuilder.InsertData(
-                schema: "dbo",
                 table: "Pessoas",
                 columns: new[] { "Id", "Nome", "TenantId" },
                 values: new object[,]
@@ -51,7 +45,6 @@ namespace Estudos.EFCore.MultiTenant.Migrations
                 });
 
             migrationBuilder.InsertData(
-                schema: "dbo",
                 table: "Produtos",
                 columns: new[] { "Id", "Descricao", "TenantId" },
                 values: new object[,]
@@ -65,12 +58,10 @@ namespace Estudos.EFCore.MultiTenant.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Pessoas",
-                schema: "dbo");
+                name: "Pessoas");
 
             migrationBuilder.DropTable(
-                name: "Produtos",
-                schema: "dbo");
+                name: "Produtos");
         }
     }
 }

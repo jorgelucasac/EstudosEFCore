@@ -2,10 +2,12 @@ using System;
 using Estudos.EFCore.MultiTenant.Data;
 using Estudos.EFCore.MultiTenant.Data.Interceptors;
 using Estudos.EFCore.MultiTenant.Data.ModelFactory;
+using Estudos.EFCore.MultiTenant.Extensions;
 using Estudos.EFCore.MultiTenant.Middlewares;
 using Estudos.EFCore.MultiTenant.Provider;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
@@ -47,12 +49,13 @@ namespace Estudos.EFCore.MultiTenant
             //});
             #endregion
 
+            #region forma 02
 
             services.AddScoped<StrategySchemaInterceptor>();
             services.AddDbContext<ApplicationDbContext>((provider, opt) =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"))
-                    .ReplaceService<IModelCacheKeyFactory, StrategySchemaModelCacheKey>()
+                    //.ReplaceService<IModelCacheKeyFactory, StrategySchemaModelCacheKey>()
                     //habilitando detalhes de erros
                     .EnableDetailedErrors()
                     //habilitando visualização de dados sensiveis
@@ -64,6 +67,35 @@ namespace Estudos.EFCore.MultiTenant
                 //var interceptor = provider.GetRequiredService<StrategySchemaInterceptor>();
                 //opt.AddInterceptors(interceptor);
             });
+
+            #endregion
+
+            #region Forma 03
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<ApplicationDbContext>(provider =>
+            {
+                var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+
+                var httpContext = provider.GetService<IHttpContextAccessor>()?.HttpContext;
+                var tenantId = httpContext?.GetTenantId();
+
+                //var connectionString = Configuration.GetConnectionString("SqlServerConnection");
+                var connectionString = Configuration.GetConnectionString(tenantId);
+                //var connectionString = Configuration.GetConnectionString("custom").Replace("_DATABASE_", tenantId);
+
+                optionsBuilder.UseSqlServer(connectionString)
+                    //habilitando detalhes de erros
+                    .EnableDetailedErrors()
+                    //habilitando visualização de dados sensiveis
+                    .EnableSensitiveDataLogging()
+                    //habilitando a exibição dos logs
+                    .LogTo(Console.WriteLine, LogLevel.Information);
+
+                return new ApplicationDbContext(optionsBuilder.Options);
+            });
+
+            #endregion
 
             services.AddScoped<ApplicationDbContext>();
             services.AddScoped<TenantData>();
@@ -85,7 +117,7 @@ namespace Estudos.EFCore.MultiTenant
 
             app.UseAuthorization();
 
-            app.UseMiddleware<TenantMiddleware>();
+            //app.UseMiddleware<TenantMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

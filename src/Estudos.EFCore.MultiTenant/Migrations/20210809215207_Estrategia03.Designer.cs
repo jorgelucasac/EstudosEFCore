@@ -9,14 +9,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Estudos.EFCore.MultiTenant.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210809211411_EstrategiaMultSchema")]
-    partial class EstrategiaMultSchema
+    [Migration("20210809215207_Estrategia03")]
+    partial class Estrategia03
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("dbo")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);

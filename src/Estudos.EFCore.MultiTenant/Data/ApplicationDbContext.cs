@@ -7,17 +7,17 @@ namespace Estudos.EFCore.MultiTenant.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        private readonly TenantData _tenantData;
+        //private readonly TenantData _tenantData;
 
-        public readonly TenantData TenantData;
+        //public readonly TenantData TenantData;
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, TenantData tenantData) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options /*,TenantData tenantData*/) : base(options)
         {
-            //forma 01 - campos nas tabelas
-            _tenantData = tenantData;
+            //forma 01 - campo de identificação na tabelas
+            //_tenantData = tenantData;
 
             //forma 02
-            TenantData = tenantData;
+            //TenantData = tenantData;
         }
 
         public DbSet<Pessoa> Pessoas { get; set; }
@@ -25,7 +25,7 @@ namespace Estudos.EFCore.MultiTenant.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema(TenantData.TenantId);
+            //modelBuilder.HasDefaultSchema(TenantData.TenantId);
 
             modelBuilder.Entity<Pessoa>().HasData(
                 new Pessoa { Id = 1, Nome = "Pessoa 1", TenantId = "tenant-1" },
