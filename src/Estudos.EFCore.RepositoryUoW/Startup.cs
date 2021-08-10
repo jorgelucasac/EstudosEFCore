@@ -2,6 +2,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using Estudos.EFCore.RepositoryUoW.Data;
 using Estudos.EFCore.RepositoryUoW.Data.Repositories;
+using Estudos.EFCore.RepositoryUoW.Data.Repositories.UsesGeneric;
 using Estudos.EFCore.RepositoryUoW.Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,6 +40,7 @@ namespace Estudos.EFCore.RepositoryUoW
                 opt.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection")));
 
             services.AddScoped<IDepartamentoRepository, DepartamentoRepository>();
+            services.AddScoped<IDepartamentoGenericRepository, DepartamentoGenericGenericRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
