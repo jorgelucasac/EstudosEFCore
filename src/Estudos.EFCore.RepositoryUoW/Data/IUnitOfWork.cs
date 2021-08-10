@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Estudos.EFCore.RepositoryUoW.Data.Repositories;
 
 namespace Estudos.EFCore.RepositoryUoW.Data
 {
     public interface IUnitOfWork : IDisposable
     {
         Task<bool> CommitAsync();
+        IDepartamentoRepository DepartamentoRepository { get; }
+
     }
 
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationContext _context;
+        private IDepartamentoRepository _departamentoRepository;
+        public IDepartamentoRepository DepartamentoRepository => _departamentoRepository ??= new DepartamentoRepository(_context);
 
         public UnitOfWork(ApplicationContext context)
         {
