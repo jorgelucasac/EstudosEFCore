@@ -2,10 +2,10 @@ namespace Estudos.EFCore.RepositoryUoW.Domain
 {
     public class Colaborador
     {
-        public int Id {get;set;}
-        public string Nome {get;set;}
+        public int Id { get; set; }
+        public string Nome { get; set; }
 
-        public int DepartamentoId{get;set;}
-        public Departamento Departamento {get;set;}
+        public int DepartamentoId { get; set; }
+        public Departamento Departamento { get; set; }
     }
 }
