@@ -39,6 +39,7 @@ namespace Estudos.EFCore.RepositoryUoW
                 opt.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection")));
 
             services.AddScoped<IDepartamentoRepository, DepartamentoRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
