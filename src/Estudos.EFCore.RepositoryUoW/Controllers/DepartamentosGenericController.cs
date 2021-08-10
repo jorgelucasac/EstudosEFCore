@@ -3,6 +3,7 @@ using Estudos.EFCore.RepositoryUoW.Data;
 using Estudos.EFCore.RepositoryUoW.Data.Repositories.UsesGeneric;
 using Estudos.EFCore.RepositoryUoW.Domain;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Estudos.EFCore.RepositoryUoW.Controllers
 {
@@ -26,6 +27,20 @@ namespace Estudos.EFCore.RepositoryUoW.Controllers
             var departamento = await _departamentoGenericRepository.GetByIdAsync(id);
 
             return Ok(departamento);
+        }
+
+        //departamento/?descricao=teste
+        [HttpGet]
+        public async Task<IActionResult> ConsultarDepartamentoAsync([FromQuery] string descricao)
+        {
+            var departamentos = await _departamentoGenericRepository
+                .GetDataAsync(
+                    p => p.Descricao.Contains(descricao),
+                    p => p.Include(c => c.Colaboradores),
+                    take: 2
+                );
+
+            return Ok(departamentos);
         }
 
 
