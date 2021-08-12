@@ -20,7 +20,8 @@ namespace Estudos.EFCore.Dicas
             //SingleOrDefaultVsFirstOrDefault();
             //ToView();
             //NaoUnicode();
-            OperadoresDeAgregacao();
+            //OperadoresDeAgregacao();
+            OperadoresDeAgregacaoNoAgrupamento();
         }
 
         /// <summary>
@@ -195,6 +196,26 @@ namespace Estudos.EFCore.Dicas
                         Media = p.Average(departamento => departamento.Id),
                         Maximo = p.Max(departamento => departamento.Id),
                         Soma = p.Sum(departamento => departamento.Id)
+                    }).ToQueryString();
+
+            Console.WriteLine(sql);
+        }
+
+        /// <summary>
+        /// Operadores de agregação no agrupamento
+        /// </summary>
+        static void OperadoresDeAgregacaoNoAgrupamento()
+        {
+            using var db = new ApplicationContext();
+
+            var sql = db.Departamentos
+                .GroupBy(p => p.Descricao)
+                .Where(p => p.Count() > 1)//HAVING COUNT(*) > 1
+                .Select(p =>
+                    new
+                    {
+                        Descricao = p.Key,
+                        Contador = p.Count()
                     }).ToQueryString();
 
             Console.WriteLine(sql);
