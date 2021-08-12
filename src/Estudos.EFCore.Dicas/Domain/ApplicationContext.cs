@@ -18,6 +18,7 @@ namespace Estudos.EFCore.Dicas.Domain
         public DbSet<Departamento> Departamentos { get; set; }
         public DbSet<Colaborador> Colaboradores { get; set; }
         public DbSet<UsuarioFuncao> UsuarioFuncoes { get; set; }
+        public DbSet<DepartamentoRelatorio> DepartamentoRelatorio { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -36,6 +37,16 @@ namespace Estudos.EFCore.Dicas.Domain
         {
             //informando que não possui chave primária
             //modelBuilder.Entity<UsuarioFuncao>().HasNoKey();
+
+
+            modelBuilder.Entity<DepartamentoRelatorio>(e =>
+            {
+                e.HasNoKey();
+
+                e.ToView("vw_departamento_relatorio");
+
+                e.Property(p => p.Departamento).HasColumnName("Descricao");
+            });
 
         }
 

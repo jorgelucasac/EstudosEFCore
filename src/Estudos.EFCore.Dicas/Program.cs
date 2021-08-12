@@ -17,7 +17,8 @@ namespace Estudos.EFCore.Dicas
             //DebugView();
             //Clear();
             //ConsultaFiltrada();
-            SingleOrDefaultVsFirstOrDefault();
+            //SingleOrDefaultVsFirstOrDefault();
+            ToView();
         }
 
         /// <summary>
@@ -113,6 +114,54 @@ namespace Estudos.EFCore.Dicas
             db.Database.EnsureCreated();
 
             var usuarioFuncoes = db.UsuarioFuncoes.Where(p => p.UsuarioId == Guid.NewGuid()).ToArray();
+        }
+
+        /// <summary>
+        /// realizando consulta em uma view
+        /// </summary>
+        static void ToView()
+        {
+            using var db = new ApplicationContext();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+
+            db.Database.ExecuteSqlRaw(
+                @"CREATE VIEW vw_departamento_relatorio AS
+                SELECT
+                    d.Descricao, count(c.Id) as Colaboradores
+                FROM Departamentos d 
+                LEFT JOIN Colaboradores c ON c.DepartamentoId=d.Id
+                GROUP BY d.Descricao");
+
+            var departamentos = Enumerable.Range(1, 10)
+                .Select(p => new Departamento
+                {
+                    Descricao = $"Departamento {p}",
+                    Colaboradores = Enumerable.Range(1, p)
+                        .Select(c => new Colaborador
+                        {
+                            Nome = $"Colaborador {p}-{c}"
+                        }).ToList()
+                });
+
+            var departamento = new Departamento
+            {
+                Descricao = $"Departamento Sem Colaborador"
+            };
+
+            db.Departamentos.Add(departamento);
+            db.Departamentos.AddRange(departamentos);
+            db.SaveChanges();
+
+            var relatorio = db.DepartamentoRelatorio
+                .Where(p => p.Colaboradores < 20)
+                .OrderBy(p => p.Departamento)
+                .ToList();
+
+            foreach (var dep in relatorio)
+            {
+                Console.WriteLine($"{dep.Departamento} [ Colaboradores: {dep.Colaboradores}]");
+            }
         }
 
     }
