@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Estudos.EFCore.Dicas.Data;
+using Estudos.EFCore.Dicas.Data.Extensions;
 using Estudos.EFCore.Utils.Helper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -64,6 +65,7 @@ namespace Estudos.EFCore.Dicas.Domain
                 property.SetMaxLength(100);
             }
 
+            modelBuilder.ToSnakeCaseNames();
         }
 
         public void EscreverLogSql(string sql)
