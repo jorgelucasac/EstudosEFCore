@@ -35,9 +35,10 @@ namespace Estudos.EFCore.SobrescrevendoComportamentos.Data
                 .EnableSensitiveDataLogging()
                 //habilitando a exibição dos logs
                 .LogTo(EscreverLogSql, LogLevel.Information)
-                
+
                 //usando os geradores de código
-                .ReplaceService<IQuerySqlGeneratorFactory, MySqlServerQuerySqlGeneratorFactory>();
+                //.ReplaceService<IQuerySqlGeneratorFactory, MySqlServerQuerySqlGeneratorFactory>()
+                ;
         }
 
 

@@ -1,7 +1,6 @@
-﻿using System;
+﻿using System.Diagnostics;
 using System.Linq;
 using Estudos.EFCore.SobrescrevendoComportamentos.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace Estudos.EFCore.SobrescrevendoComportamentos
 {
@@ -9,13 +8,16 @@ namespace Estudos.EFCore.SobrescrevendoComportamentos
     {
         static void Main(string[] args)
         {
+            DiagnosticListener.AllListeners.Subscribe(new MyInterceptorListener());
 
             using var db = new ApplicationContext();
             db.Database.EnsureCreated();
 
-            var sql = db.Departamentos.Where(p=>p.Id > 0).ToQueryString();
+            //var sql = db.Departamentos.Where(p=>p.Id > 0).ToQueryString();
 
-            Console.WriteLine(sql);
+            _ = db.Departamentos.Where(p => p.Id > 0).ToArray();
+
+            //Console.WriteLine(sql);
         }
     }
 }
