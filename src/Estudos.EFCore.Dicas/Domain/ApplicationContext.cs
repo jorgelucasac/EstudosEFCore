@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Estudos.EFCore.Dicas.Data;
 using Estudos.EFCore.Utils.Helper;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,21 @@ namespace Estudos.EFCore.Dicas.Domain
 
                 e.Property(p => p.Departamento).HasColumnName("Descricao");
             });
+
+            //forçando o uso de varchar quando não setar o tipo para
+            //propriedades do tipo string
+            var properties = modelBuilder.Model.GetEntityTypes()
+                .SelectMany(p => p.GetProperties())
+                .Where(p => p.ClrType == typeof(string)
+                            && p.GetColumnType() == null);
+
+            foreach (var property in properties)
+            {
+                //nvarchar == unicode
+                //varchar  == não unicode
+                property.SetIsUnicode(false);
+                property.SetMaxLength(100);
+            }
 
         }
 

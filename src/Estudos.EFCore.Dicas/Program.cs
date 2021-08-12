@@ -18,7 +18,8 @@ namespace Estudos.EFCore.Dicas
             //Clear();
             //ConsultaFiltrada();
             //SingleOrDefaultVsFirstOrDefault();
-            ToView();
+            //ToView();
+            NaoUnicode();
         }
 
         /// <summary>
@@ -162,6 +163,18 @@ namespace Estudos.EFCore.Dicas
             {
                 Console.WriteLine($"{dep.Departamento} [ Colaboradores: {dep.Colaboradores}]");
             }
+        }
+
+        /// <summary>
+        /// forçando o uso de varchar
+        /// </summary>
+        static void NaoUnicode()
+        {
+            using var db = new ApplicationContext();
+
+            var sql = db.Database.GenerateCreateScript();
+
+            Console.WriteLine(sql);
         }
 
     }
