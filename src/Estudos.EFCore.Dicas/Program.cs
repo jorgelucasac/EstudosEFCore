@@ -21,7 +21,8 @@ namespace Estudos.EFCore.Dicas
             //ToView();
             //NaoUnicode();
             //OperadoresDeAgregacao();
-            OperadoresDeAgregacaoNoAgrupamento();
+            //OperadoresDeAgregacaoNoAgrupamento();
+            ContadorDeEventos();
         }
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace Estudos.EFCore.Dicas
             using var db = new ApplicationContext();
 
             //db.ChangeTracker.DebugView;
-            
+
             db.Departamentos.Add(new Departamento { Descricao = "TESTE DebugView" });
 
 
@@ -219,6 +220,33 @@ namespace Estudos.EFCore.Dicas
                     }).ToQueryString();
 
             Console.WriteLine(sql);
+        }
+
+        /// <summary>
+        /// Contadores de eventos
+        /// </summary>
+        static void ContadorDeEventos()
+        {
+            using var db = new ApplicationContext();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+
+            Console.WriteLine($" PID: {System.Diagnostics.Process.GetCurrentProcess().Id}");
+
+            while (Console.ReadKey().Key != ConsoleKey.Escape)
+            {
+                var departamento = new Departamento
+                {
+                    Descricao = $"Departamento Sem Colaborador"
+                };
+
+                db.Departamentos.Add(departamento);
+                db.SaveChanges();
+
+                _ = db.Departamentos.Find(1);
+                _ = db.Departamentos.AsNoTracking().FirstOrDefault();
+            }
+
         }
 
     }
