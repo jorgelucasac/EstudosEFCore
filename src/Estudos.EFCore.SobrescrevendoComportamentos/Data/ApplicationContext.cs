@@ -2,6 +2,7 @@ using System;
 using Estudos.EFCore.SobrescrevendoComportamentos.Entities;
 using Estudos.EFCore.Utils.Helper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -33,9 +34,12 @@ namespace Estudos.EFCore.SobrescrevendoComportamentos.Data
                 //habilitando visualização de dados sensiveis
                 .EnableSensitiveDataLogging()
                 //habilitando a exibição dos logs
-                .LogTo(EscreverLogSql, LogLevel.Information);
+                .LogTo(EscreverLogSql, LogLevel.Information)
+                
+                //usando os geradores de código
+                .ReplaceService<IQuerySqlGeneratorFactory, MySqlServerQuerySqlGeneratorFactory>();
         }
-        
+
 
         public void EscreverLogSql(string sql)
         {
