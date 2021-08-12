@@ -10,9 +10,13 @@ namespace Estudos.EFCore.Dicas
     {
         static void Main(string[] args)
         {
+            using var db = new ApplicationContext();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
             //ToQueryString();
             //DebugView();
-            Clear();
+            //Clear();
+            ConsultaFiltrada();
         }
 
         /// <summary>
@@ -61,5 +65,22 @@ namespace Estudos.EFCore.Dicas
             //descartando as entidades que estão sendo rastreadas
             db.ChangeTracker.Clear();
         }
+
+        /// <summary>
+        /// Include com consultas filtradas
+        /// </summary>
+        static void ConsultaFiltrada()
+        {
+            using var db = new ApplicationContext();
+
+            //filtra pela propriedade de navegação incluida
+            var sql = db
+                .Departamentos
+                .Include(p => p.Colaboradores.Where(c => c.Nome.Contains("Teste")))
+                .ToQueryString();
+
+            Console.WriteLine(sql);
+        }
+
     }
 }
