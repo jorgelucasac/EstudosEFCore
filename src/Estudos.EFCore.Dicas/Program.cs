@@ -19,7 +19,8 @@ namespace Estudos.EFCore.Dicas
             //ConsultaFiltrada();
             //SingleOrDefaultVsFirstOrDefault();
             //ToView();
-            NaoUnicode();
+            //NaoUnicode();
+            OperadoresDeAgregacao();
         }
 
         /// <summary>
@@ -173,6 +174,28 @@ namespace Estudos.EFCore.Dicas
             using var db = new ApplicationContext();
 
             var sql = db.Database.GenerateCreateScript();
+
+            Console.WriteLine(sql);
+        }
+
+        /// <summary>
+        /// utilizando operadores de agregacao
+        /// </summary>
+        static void OperadoresDeAgregacao()
+        {
+            using var db = new ApplicationContext();
+
+            var sql = db.Departamentos
+                .GroupBy(p => p.Descricao)
+                .Select(p =>
+                    new
+                    {
+                        Descricao = p.Key,
+                        Contador = p.Count(),
+                        Media = p.Average(departamento => departamento.Id),
+                        Maximo = p.Max(departamento => departamento.Id),
+                        Soma = p.Sum(departamento => departamento.Id)
+                    }).ToQueryString();
 
             Console.WriteLine(sql);
         }
