@@ -11,7 +11,8 @@ namespace Estudos.EFCore.Dicas
         static void Main(string[] args)
         {
             //ToQueryString();
-            DebugView();
+            //DebugView();
+            Clear();
         }
 
         /// <summary>
@@ -45,6 +46,20 @@ namespace Estudos.EFCore.Dicas
 
             //somente em debug
             //query.DebugView
+        }
+
+        /// <summary>
+        /// Redefinindo o estado do contexto
+        /// </summary>
+        static void Clear()
+        {
+            using var db = new ApplicationContext();
+
+            db.Departamentos.Add(new Departamento { Descricao = "TESTE DebugView" });
+
+            //limpar o track
+            //descartando as entidades que estão sendo rastreadas
+            db.ChangeTracker.Clear();
         }
     }
 }
