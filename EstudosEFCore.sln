@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.EFCore.Migracoes", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.EFCore.MultiTenant", "src\Estudos.EFCore.MultiTenant\Estudos.EFCore.MultiTenant.csproj", "{B041331D-3052-4332-82FE-E4D3C78CCC52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estudos.EFCore.RepositoryUoW", "src\Estudos.EFCore.RepositoryUoW\Estudos.EFCore.RepositoryUoW.csproj", "{C8C7BA4B-FC4D-4BD3-801E-31DAE80E0994}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estudos.EFCore.RepositoryUoW", "src\Estudos.EFCore.RepositoryUoW\Estudos.EFCore.RepositoryUoW.csproj", "{C8C7BA4B-FC4D-4BD3-801E-31DAE80E0994}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estudos.EFCore.Dicas", "src\Estudos.EFCore.Dicas\Estudos.EFCore.Dicas.csproj", "{D47338A3-CC52-45E4-B023-FD1729A6068F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +95,10 @@ Global
 		{C8C7BA4B-FC4D-4BD3-801E-31DAE80E0994}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8C7BA4B-FC4D-4BD3-801E-31DAE80E0994}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8C7BA4B-FC4D-4BD3-801E-31DAE80E0994}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D47338A3-CC52-45E4-B023-FD1729A6068F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D47338A3-CC52-45E4-B023-FD1729A6068F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D47338A3-CC52-45E4-B023-FD1729A6068F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D47338A3-CC52-45E4-B023-FD1729A6068F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
