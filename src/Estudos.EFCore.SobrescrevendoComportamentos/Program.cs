@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using Estudos.EFCore.SobrescrevendoComportamentos.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Estudos.EFCore.SobrescrevendoComportamentos
 {
@@ -6,7 +9,13 @@ namespace Estudos.EFCore.SobrescrevendoComportamentos
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+
+            using var db = new ApplicationContext();
+            db.Database.EnsureCreated();
+
+            var sql = db.Departamentos.Where(p=>p.Id > 0).ToQueryString();
+
+            Console.WriteLine(sql);
         }
     }
 }
