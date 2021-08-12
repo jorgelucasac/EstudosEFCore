@@ -17,6 +17,7 @@ namespace Estudos.EFCore.Dicas.Domain
         }
         public DbSet<Departamento> Departamentos { get; set; }
         public DbSet<Colaborador> Colaboradores { get; set; }
+        public DbSet<UsuarioFuncao> UsuarioFuncoes { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -29,6 +30,13 @@ namespace Estudos.EFCore.Dicas.Domain
                 .EnableSensitiveDataLogging()
                 //habilitando a exibição dos logs
                 .LogTo(EscreverLogSql, LogLevel.Information);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //informando que não possui chave primária
+            //modelBuilder.Entity<UsuarioFuncao>().HasNoKey();
+
         }
 
         public void EscreverLogSql(string sql)

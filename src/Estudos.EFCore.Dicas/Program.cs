@@ -102,5 +102,18 @@ namespace Estudos.EFCore.Dicas
             _ = db.Departamentos.FirstOrDefault(p => p.Id > 2);
         }
 
+        /// <summary>
+        /// consultando em tabelas sem chave primaria
+        /// não é possível inserir/editar ou deletar dados em tabelas sem chaves
+        /// </summary>
+        static void SemChavePrimaria()
+        {
+            using var db = new ApplicationContext();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+
+            var usuarioFuncoes = db.UsuarioFuncoes.Where(p => p.UsuarioId == Guid.NewGuid()).ToArray();
+        }
+
     }
 }
