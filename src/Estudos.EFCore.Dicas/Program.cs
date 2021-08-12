@@ -10,13 +10,14 @@ namespace Estudos.EFCore.Dicas
     {
         static void Main(string[] args)
         {
-            using var db = new ApplicationContext();
-            db.Database.EnsureDeleted();
-            db.Database.EnsureCreated();
+            //using var db = new ApplicationContext();
+            //db.Database.EnsureDeleted();
+            //db.Database.EnsureCreated();
             //ToQueryString();
             //DebugView();
             //Clear();
-            ConsultaFiltrada();
+            //ConsultaFiltrada();
+            SingleOrDefaultVsFirstOrDefault();
         }
 
         /// <summary>
@@ -80,6 +81,25 @@ namespace Estudos.EFCore.Dicas
                 .ToQueryString();
 
             Console.WriteLine(sql);
+        }
+
+        /// <summary>
+        /// SingleOrDefault vs FirstOrDefault
+        /// </summary>
+        static void SingleOrDefaultVsFirstOrDefault()
+        {
+            using var db = new ApplicationContext();
+
+            Console.WriteLine("SingleOrDefault:");
+
+            //utiliza 'TOP (2)' na consulta para verificar se há duplicidade
+            // util quando não pode existir dois registro com o mesmo dado
+            _ = db.Departamentos.SingleOrDefault(p => p.Id > 2);
+
+            Console.WriteLine("FirstOrDefault:");
+
+            //utiliza 'TOP (1)' e retorna o primeiro item
+            _ = db.Departamentos.FirstOrDefault(p => p.Id > 2);
         }
 
     }
