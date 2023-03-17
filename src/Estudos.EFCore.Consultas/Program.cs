@@ -1,34 +1,32 @@
-﻿using System;
-using System.Data;
-using System.Linq;
-using Estudos.EFCore.Consultas.Data;
+﻿using Estudos.EFCore.Consultas.Data;
 using Estudos.EFCore.Consultas.Domain;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 
 namespace Estudos.EFCore.Consultas
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-
 
             //FiltroGlobal();
             //IgnorarFiltroGlobal();
             //ConsultaProjetada();
             //ConsultaParametrizada();
-            //ConsultaInterolada();
+            //ConsultaIntepolada();
             //ConsultaComTag();
-            //EntendendoConsulta1NN1();
+            EntendendoConsulta1NN1();
             //DivisaoDeConsulta();
             //CriarStoredProcedure();
             //InserirDadosViaProcedure();
             //CriarStoredProcedureDeConsulta();
-            ConsultaViaProcedure();
-
-
+            //ConsultaViaProcedure();
 
             Console.WriteLine("\n\n");
         }
@@ -36,7 +34,7 @@ namespace Estudos.EFCore.Consultas
         /// <summary>
         /// utilizando um filtro global para retornar apenas os registros não excluídos
         /// </summary>
-        static void FiltroGlobal()
+        private static void FiltroGlobal()
         {
             using var db = new ApplicationDbContext();
             Setup(db);
@@ -52,7 +50,7 @@ namespace Estudos.EFCore.Consultas
         /// <summary>
         /// Ignorando o filtro global definido para o mapeamento
         /// </summary>
-        static void IgnorarFiltroGlobal()
+        private static void IgnorarFiltroGlobal()
         {
             using var db = new ApplicationDbContext();
             Setup(db);
@@ -67,13 +65,14 @@ namespace Estudos.EFCore.Consultas
         }
 
         //informa os campos que devem ser retonados na consulta
-        static void ConsultaProjetada()
+        private static void ConsultaProjetada()
         {
             using var db = new ApplicationDbContext();
             Setup(db);
 
             var departamentos = db.Departamentos
-                .Where(p => p.Id > 0)
+                //.Where(p => p.Id > 0)
+                .Where(p => p.Funcionarios.Any(x => x.Idade > 20))
                 .Select(p => new { p.Descricao, Funcionarios = p.Funcionarios.Select(a => a.Nome) })
                 .ToList();
 
@@ -91,7 +90,7 @@ namespace Estudos.EFCore.Consultas
         /// <summary>
         /// utilizando sql para montar a consulta
         /// </summary>
-        static void ConsultaParametrizada()
+        private static void ConsultaParametrizada()
         {
             using var db = new ApplicationDbContext();
             //Setup(db);
@@ -119,7 +118,7 @@ namespace Estudos.EFCore.Consultas
         /// <summary>
         /// utilizando string interpolada para informar um comando sql com parametros
         /// </summary>
-        static void ConsultaInterolada()
+        private static void ConsultaIntepolada()
         {
             using var db = new ApplicationDbContext();
             //Setup(db);
@@ -147,14 +146,14 @@ namespace Estudos.EFCore.Consultas
         /// <summary>
         /// enviando comentários para o servidor
         /// </summary>
-        static void ConsultaComTag()
+        private static void ConsultaComTag()
         {
             using var db = new ApplicationDbContext();
             Setup(db);
 
             var departamentos = db.Departamentos
                 .TagWith(@"Estou enviando um comentario para o servidor
-                
+
                 Segundo comentario
                 Terceiro comentario")
                 .ToList();
@@ -166,41 +165,39 @@ namespace Estudos.EFCore.Consultas
         }
 
         //diferença em consultas 1xN vs Nx1
-        static void EntendendoConsulta1NN1()
+        private static void EntendendoConsulta1NN1()
         {
             using var db = new ApplicationDbContext();
             Setup(db);
             // Nx1 -> INNER JOIN
             //retona os funcaionarios e o departamento do funcaionario
-            var funcionarios = db.Funcionarios
-                .Include(p => p.Departamento)
-                .ToList();
+            //var funcionarios = db.Funcionarios
+            //    .Include(p => p.Departamento)
+            //    .ToList();
 
+            //foreach (var funcionario in funcionarios)
+            //{
+            //    Console.WriteLine($"Nome: {funcionario.Nome} / Descricap Dep: {funcionario.Departamento.Descricao}");
+            //}
 
-            foreach (var funcionario in funcionarios)
-            {
-                Console.WriteLine($"Nome: {funcionario.Nome} / Descricap Dep: {funcionario.Departamento.Descricao}");
-            }
-
-
-            /*
             // 1xN -> LEFT JOIN
             //retona os departamentos e todos os funcaionarios de cada departamento
             var departamentos = db.Departamentos
-                .Include(f=> f.Funcionarios)
-                .ToList();
+                .AsNoTrackingWithIdentityResolution()
+                .Include(f => f.Funcionarios.Where(x => x.Idade > 19))
+                .Where(x => x.Funcionarios.Any())
+                .ToList()
+                .Select(x => new Retorno(x.Descricao, x.Funcionarios.Select(u => u.Nome)));
 
-            
             foreach (var departamento in departamentos)
             {
                 Console.WriteLine($"Descrição: {departamento.Descricao}");
 
                 foreach (var funcionario in departamento.Funcionarios)
                 {
-                    Console.WriteLine($"Nome: {funcionario.Nome}");
+                    Console.WriteLine($"Nome: {funcionario}");
                 }
             }
-            */
         }
 
         /// <summary>
@@ -211,7 +208,7 @@ namespace Estudos.EFCore.Consultas
         /// 'AsSingleQuery' força a execução usando join
         /// caso 'SplitQuery' esteja  configurado globalmente
         /// </summary>
-        static void DivisaoDeConsulta()
+        private static void DivisaoDeConsulta()
         {
             using var db = new ApplicationDbContext();
             Setup(db);
@@ -233,7 +230,7 @@ namespace Estudos.EFCore.Consultas
             }
         }
 
-        static void CriarStoredProcedure()
+        private static void CriarStoredProcedure()
         {
             var criarDepartamento = @"
             CREATE OR ALTER PROCEDURE CriarDepartamento
@@ -241,10 +238,10 @@ namespace Estudos.EFCore.Consultas
                 @Ativo bit
             AS
             BEGIN
-                INSERT INTO 
-                    Departamentos(Descricao, Ativo, Excluido) 
+                INSERT INTO
+                    Departamentos(Descricao, Ativo, Excluido)
                 VALUES (@Descricao, @Ativo, 0)
-            END        
+            END
             ";
 
             using var db = new ApplicationDbContext();
@@ -252,14 +249,14 @@ namespace Estudos.EFCore.Consultas
             db.Database.ExecuteSqlRaw(criarDepartamento);
         }
 
-        static void InserirDadosViaProcedure()
+        private static void InserirDadosViaProcedure()
         {
             using var db = new ApplicationDbContext();
 
             db.Database.ExecuteSqlRaw("execute CriarDepartamento @p0, @p1", "Departamento Via Procedure", true);
         }
 
-        static void CriarStoredProcedureDeConsulta()
+        private static void CriarStoredProcedureDeConsulta()
         {
             var criarDepartamento = @"
             CREATE OR ALTER PROCEDURE GetDepartamentos
@@ -267,7 +264,7 @@ namespace Estudos.EFCore.Consultas
             AS
             BEGIN
                 SELECT * FROM Departamentos Where Descricao Like @Descricao + '%'
-            END        
+            END
             ";
 
             using var db = new ApplicationDbContext();
@@ -275,7 +272,7 @@ namespace Estudos.EFCore.Consultas
             db.Database.ExecuteSqlRaw(criarDepartamento);
         }
 
-        static void ConsultaViaProcedure()
+        private static void ConsultaViaProcedure()
         {
             using var db = new ApplicationDbContext();
 
@@ -292,7 +289,7 @@ namespace Estudos.EFCore.Consultas
             }
         }
 
-        static void Setup(ApplicationDbContext db)
+        private static void Setup(ApplicationDbContext db)
         {
             //db.Database.EnsureDeleted();
             if (db.Database.EnsureCreated())
@@ -302,13 +299,14 @@ namespace Estudos.EFCore.Consultas
                     {
                         Ativo = true,
                         Descricao = "Departamento 01",
-                        Funcionarios = new System.Collections.Generic.List<Funcionario>
+                        Funcionarios = new List<Funcionario>
                         {
                             new Funcionario
                             {
                                 Nome = "Rafael Almeida",
                                 CPF = "99999999911",
-                                RG= "2100062"
+                                RG= "2100062",
+                                Idade = 20
                             }
                         },
                         Excluido = true
@@ -317,19 +315,21 @@ namespace Estudos.EFCore.Consultas
                     {
                         Ativo = true,
                         Descricao = "Departamento 02",
-                        Funcionarios = new System.Collections.Generic.List<Funcionario>
+                        Funcionarios = new List<Funcionario>
                         {
                             new Funcionario
                             {
                                 Nome = "Bruno Brito",
                                 CPF = "88888888811",
-                                RG= "3100062"
+                                RG= "3100062",
+                                Idade = 25
                             },
                             new Funcionario
                             {
                                 Nome = "Eduardo Pires",
                                 CPF = "77777777711",
-                                RG= "1100062"
+                                RG= "1100062",
+                                Idade = 18
                             }
                         }
                     });
